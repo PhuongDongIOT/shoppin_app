@@ -1,0 +1,23 @@
+# dotenv environment variable files
+backend/.env
+backend/.env.development.local
+backend/.env.test.local
+backend/.env.production.local
+backend/.env.local
+
+# TypeScript cache
+backend/*.tsbuildinfo
+
+# Optional npm cache directory
+backend/.npm
+
+# Optional eslint cache
+backend/.eslintcache
+
+# Optional stylelint cache
+backend/.stylelintcache
+
+# Dependency directories
+backend/node_modules/
+backend/package-lock.json
+backend/jspm_packages/
