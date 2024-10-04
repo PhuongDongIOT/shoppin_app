@@ -1,6 +1,5 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
-const Role = require('../utils/userRoles.utils');
 
 class ProductModel {
     tableName = 'product';
@@ -23,11 +22,11 @@ class ProductModel {
         return result[0];
     }
 
-    create = async ({ title, price, description, imageUrl, userId }) => {
+    create = async ({ category_id, title, slug, picture, summary, description, price, created_by }) => {
         const sql = `INSERT INTO ${this.tableName}
-        (title, price, description, imageUrl, userId) VALUES (?,?,?,?,?)`;
+        (category_id, title, slug, picture, summary, description, price, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
         
-        const result = await query(sql, [title, price, description, imageUrl, userId]);
+        const result = await query(sql, [category_id, title, slug, picture, summary, description, price, created_by]);
         const affectedRows = result ? result.affectedRows : 0;
         return affectedRows;
     }

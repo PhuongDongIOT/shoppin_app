@@ -1,10 +1,8 @@
 const crypto = require('crypto');
-
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator/check');
-
 const User = require('../models/user');
 const UserModel = require('../models/user.model');
 
@@ -84,7 +82,7 @@ exports.postLogin = (req, res, next) => {
                     },
                     validationErrors: []
                 });
-            }   
+            }
             bcrypt.compare(password, user.password)
                 .then(doMatch => {
                     if (doMatch) {
@@ -118,34 +116,13 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
+    const { slug, email, name, avatar, bio, company } = req.body;
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('auth/signup', {
-            path: '/signup',
-            pageTitle: 'Signup',
-            errorMessage: errors.array()[0].msg,
-            oldInput: {
-                email: email,
-                password: password,
-                confirmPassword: confirmPassword
-            },
-            validationErrors: errors.array()
-        });
-    }
-
-    
 
     bcrypt.hash(password, 12)
         .then(hashedPassword => {
             const createUser = UserModel.create({
-                username: email,
-                password: hashedPassword,
-                first_name: email,
-                last_name: email,
-                email: email
+                slug, email, name, avatar, bio, company
             })
             return createUser;
         })
@@ -164,7 +141,7 @@ exports.postSignup = (req, res, next) => {
 exports.postLogout = (req, res, next) => {
     req.session.destroy(err => {
         console.log(err);
-        res.redirect('/');  
+        res.redirect('/');
     });
 };
 

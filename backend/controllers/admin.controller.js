@@ -152,10 +152,6 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
     Product.find({ userId: req.user._id })
-        // .select('title price')           // only titles and prices are selected from the products
-        // .select('title price -_id')      // ids from returned products are explicitly excluded!
-        // .populate('userId')              // returned products will have all users' info
-        // .populate('userId', 'name')      // returned products will have the users' names
         .then(products => {
             res.render('admin/products', {
                 prods: products,

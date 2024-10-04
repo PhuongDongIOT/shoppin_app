@@ -1,10 +1,8 @@
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
-// const Role = require('../utils/userRoles.utils');
 
-class UserModel {
-    tableUser = 'users';
-    tableCredentials = 'credentials';
+class OrderModel {
+    tableOrder = 'orders';
 
     find = async (params = {}) => {
         let sql = `SELECT * FROM ${this.tableUser}`;
@@ -22,13 +20,10 @@ class UserModel {
         return result[0];
     }
 
-    create = async ({ slug, email, name, avatar, bio, company, age = 0 }) => {
+    create = async ({ user_id }) => {
         const sqlUser = `INSERT INTO ${this.tableUser}
-        (slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-        const resultuser = await query(sqlUser, [slug, email, name, avatar, bio, company, 1, 0, age]);
-        const sqlCredentials = `INSERT INTO ${this.tableCredentials}
-        (provider_key, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)`;
-        const result = await query(sqlCredentials, [slug, email, name, avatar, bio, company, 1, 0, age]);
+        (user_id, is_deleted,status) VALUES (?, ?, ?)`;
+        const resultuser = await query(sqlUser, [user_id, 0, 1]);
         const affectedRows = resultuser ? resultuser.affectedRows : 0;
         return affectedRows;
     }
@@ -49,4 +44,4 @@ class UserModel {
     }
 }
 
-module.exports = new UserModel;
+module.exports = new OrderModel;
