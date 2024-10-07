@@ -2,9 +2,8 @@ const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
-class UserModel {
-    tableUser = 'users';
-    tableCredentials = 'credentials';
+class OrderModel {
+    tableOrder = 'orders';
 
     find = async (params = {}) => {
         let sql = `SELECT * FROM ${this.tableUser}`;
@@ -22,16 +21,16 @@ class UserModel {
         return result[0];
     }
 
-    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, age = 0 }) => {
-        const sqlUser = `INSERT INTO ${this.tableUser}
-        (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
+    create = async ({ user_id }) => {
+        const sqlOrder = `INSERT INTO ${this.tableUser}
+        (id, user_id, is_deleted,status) VALUES (?, ?, ?)`;
         try {
-            const idUser = uuidv4();
-            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
-            return idUser;
-        } catch (error) { console.log(error); }
-        return null;
+            const oderId = uuidv4()
+            await query(sqlOrder, [user_id, 0, 1]);
+            return oderId;
+        } catch (error) {
+            return null;
+        }
     }
 
     update = async (params, id) => {
@@ -50,4 +49,4 @@ class UserModel {
     }
 }
 
-module.exports = new UserModel;
+module.exports = new OrderModel;

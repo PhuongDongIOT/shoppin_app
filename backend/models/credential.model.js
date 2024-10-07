@@ -2,12 +2,11 @@ const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
-class UserModel {
-    tableUser = 'users';
-    tableCredentials = 'credentials';
-
+class CredentialModel {
+    tableCredential = 'credentials';
+    
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableUser}`;
+        let sql = `SELECT * FROM ${this.tableCredential}`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;
@@ -16,22 +15,20 @@ class UserModel {
 
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `SELECT * FROM ${this.tableUser}
+        const sql = `SELECT * FROM ${this.tableCredential}
         WHERE ${columnSet}`;
         const result = await query(sql, [...values]);
         return result[0];
     }
 
-    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, age = 0 }) => {
-        const sqlUser = `INSERT INTO ${this.tableUser}
-        (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
+    create = async ({ user_id, hasher, password_hash, password_salt }) => {
+        const sqlCredential = `INSERT INTO ${this.tableCredential}
+        (provider_id, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)`;
         try {
-            const idUser = uuidv4();
-            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
-            return idUser;
-        } catch (error) { console.log(error); }
-        return null;
+            const resultuser = await query(sqlCredential, [uuidv4(), user_id, hasher, password_hash, password_salt]);
+            const affectedRows = resultuser ? resultuser.affectedRows : 0;
+            return affectedRows;
+        } catch (error) { console.log(error) }
     }
 
     update = async (params, id) => {
@@ -42,7 +39,7 @@ class UserModel {
     }
 
     delete = async (id) => {
-        const sql = `DELETE FROM ${this.tableUser}
+        const sql = `DELETE FROM ${this.tableCredential}
         WHERE id = ?`;
         const result = await query(sql, [id]);
         const affectedRows = result ? result.affectedRows : 0;
@@ -50,4 +47,4 @@ class UserModel {
     }
 }
 
-module.exports = new UserModel;
+module.exports = new CredentialModel;

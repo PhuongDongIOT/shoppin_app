@@ -2,12 +2,11 @@ const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
-class UserModel {
-    tableUser = 'users';
-    tableCredentials = 'credentials';
+class ReviewModel {
+    tableReviews = 'reviews';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableUser}`;
+        let sql = `SELECT * FROM ${this.tableReviews}`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;
@@ -16,22 +15,22 @@ class UserModel {
 
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `SELECT * FROM ${this.tableUser}
+        const sql = `SELECT * FROM ${this.tableReviews}
         WHERE ${columnSet}`;
-        const result = await query(sql, [...values]);
+        const result = await query  (sql, [...values]);
         return result[0];
     }
 
-    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, age = 0 }) => {
-        const sqlUser = `INSERT INTO ${this.tableUser}
-        (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-
+    create = async ({ user_id, category_id = null, product_id = null, rating = null, comment }) => {
+        const sqlReview = `INSERT INTO ${this.tableReviews}
+        (id, user_id, category_id, rating, product_id, comment) VALUES (?, ?, ?, ?, ?, ?)`;
         try {
-            const idUser = uuidv4();
-            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
-            return idUser;
-        } catch (error) { console.log(error); }
-        return null;
+            const reviewId = uuidv4()
+            await query(sqlReview, [reviewId, user_id, category_id, product_id, rating, comment]);
+            return reviewId;
+        } catch (error) {
+            return null;
+        }
     }
 
     update = async (params, id) => {
@@ -42,7 +41,7 @@ class UserModel {
     }
 
     delete = async (id) => {
-        const sql = `DELETE FROM ${this.tableUser}
+        const sql = `DELETE FROM ${this.tableReviews}
         WHERE id = ?`;
         const result = await query(sql, [id]);
         const affectedRows = result ? result.affectedRows : 0;
@@ -50,4 +49,4 @@ class UserModel {
     }
 }
 
-module.exports = new UserModel;
+module.exports = new ReviewModel;
