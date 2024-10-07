@@ -26,8 +26,8 @@ class UserModel {
         const sqlUser = `INSERT INTO ${this.tableUser}
         (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        const idUser = uuidv4();
         try {
+            const idUser = uuidv4();
             await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
             return idUser;
         } catch (error) { console.log(error); }

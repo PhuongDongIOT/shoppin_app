@@ -39,11 +39,11 @@ class CartItemsModel {
         return result;
     }
 
-    delete = async (id) => {
+    delete = async (cart_id, product_id) => {
         const sql = `DELETE FROM ${this.tableCartItem}
-        WHERE cart_id = ?`;
+        WHERE cart_id = ? AND product_id = ?`;
         try {
-            const result = await query(sql, [id]);
+            const result = await query(sql, [cart_id, product_id]);
             const affectedRows = result ? result.affectedRows : 0;
             return affectedRows;
         } catch (error) {

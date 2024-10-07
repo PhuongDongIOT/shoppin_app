@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
@@ -21,11 +22,15 @@ class OrderModel {
     }
 
     create = async ({ user_id }) => {
-        const sqlUser = `INSERT INTO ${this.tableUser}
-        (user_id, is_deleted,status) VALUES (?, ?, ?)`;
-        const resultuser = await query(sqlUser, [user_id, 0, 1]);
-        const affectedRows = resultuser ? resultuser.affectedRows : 0;
-        return affectedRows;
+        const sqlOrder = `INSERT INTO ${this.tableUser}
+        (id, user_id, is_deleted,status) VALUES (?, ?, ?)`;
+        try {
+            const oderId = uuidv4()
+            await query(sqlOrder, [user_id, 0, 1]);
+            return oderId;
+        } catch (error) {
+            return null;
+        }
     }
 
     update = async (params, id) => {

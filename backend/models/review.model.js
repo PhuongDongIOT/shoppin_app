@@ -1,7 +1,8 @@
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
-    class ReviewModel {
+class ReviewModel {
     tableReviews = 'reviews';
 
     find = async (params = {}) => {
@@ -16,16 +17,20 @@ const { multipleColumnSet } = require('../utils/common.utils');
         const { columnSet, values } = multipleColumnSet(params)
         const sql = `SELECT * FROM ${this.tableReviews}
         WHERE ${columnSet}`;
-        const result = await query(sql, [...values]);
+        const result = await query  (sql, [...values]);
         return result[0];
     }
 
-    create = async ({ user_id, category_id, product_id, rating, comment }) => {
-        const sqlUser = `INSERT INTO ${this.tableReviews}
-        (user_id, category_id, rating, product_id, comment) VALUES (?, ?, ?, ?, ?)`;
-        const resultuser = await query(sqlUser, [user_id, category_id, product_id, rating, comment]);
-        const affectedRows = resultuser ? resultuser.affectedRows : 0;
-        return affectedRows;
+    create = async ({ user_id, category_id = null, product_id = null, rating = null, comment }) => {
+        const sqlReview = `INSERT INTO ${this.tableReviews}
+        (id, user_id, category_id, rating, product_id, comment) VALUES (?, ?, ?, ?, ?, ?)`;
+        try {
+            const reviewId = uuidv4()
+            await query(sqlReview, [reviewId, user_id, category_id, product_id, rating, comment]);
+            return reviewId;
+        } catch (error) {
+            return null;
+        }
     }
 
     update = async (params, id) => {

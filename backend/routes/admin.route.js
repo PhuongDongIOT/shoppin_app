@@ -9,23 +9,24 @@ const router = express.Router();
 router.post(
     '/add-category',
     createCategorySchema,
-    // auth(),
+    auth(),
     adminController.postAddCategory
 );
-
+router.get('product', adminController.getListProduct);
+router.get('product/:productId', adminController.getProduct);
 router.post(
     '/add-product',
     createProductSchema,
-    // auth(),
+    auth(),
     adminController.postAddProduct
 );
-// router.get('product/:productId', auth(), adminController.getEditProduct);
 router.post(
     '/edit-product',
     updateProductSchema,
-    // auth(),
+    auth(),
     adminController.postEditProduct
 );
 router.delete('/product/:productId', auth(), adminController.deleteProduct);
 
 module.exports = router;
+

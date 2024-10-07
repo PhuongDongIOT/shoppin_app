@@ -1,12 +1,12 @@
 const bcrypt = require('bcryptjs');
 // const nodemailer = require('nodemailer');
 // const sendgridTransport = require('nodemailer-sendgrid-transport');
-const { validationResult } = require('express-validator/check');
-const UserModel = require('../models/user.model');
-const credentialModel = require('../models/credential.model');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
+const { validationResult } = require('express-validator/check');
+const UserModel = require('../models/user.model');
+const credentialModel = require('../models/credential.model');
 
 // const transporter = nodemailer.createTransport(sendgridTransport({
 //     auth: {

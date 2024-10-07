@@ -1,65 +1,28 @@
-const fs = require('fs');
-const path = require('path');
-const PDFDocument = require('pdfkit');
-const stripe = require('stripe')('sk_test_dcVHL86Zd2TjE8fOwFkcQO4e00JGCZhQw5');
+const { validationResult } = require('express-validator/check');
 const ProductModel = require('../models/product.model');
 const CartModel = require('../models/cart.model');
 const CartItemModel = require('../models/cart-item.model');
-const Order = require('../models/order.model');
+const OrderModel = require('../models/order.model');
+const OrderLineModel = require('../models/order-line.model');
+const ReviewModel = require('../models/review.model');
 const { checkEmptyArray } = require('../utils/array.utils');
 
-const ITEMS_PER_PAGE = 2;
-
-exports.getProducts = (req, res, next) => {
-    const page = +req.query.page || 1; // (|| 1) handles the default value when there isn't query parameters
-    let totalItems;
-
-    Product.find()
-        .countDocuments()
-        .then(numProducts => {
-            totalItems = numProducts;
-            return Product.find()
-                .skip((page - 1) * ITEMS_PER_PAGE)
-                .limit(ITEMS_PER_PAGE)
-        })
-        .then(products => {
-            res.render('shop/product-list', {
-                prods: products,
-                pageTitle: 'All Products',
-                path: '/products',
-                currentPage: page,
-                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-                hasPreviousPage: page > 1,
-                nextPage: page + 1,
-                previousPage: page - 1,
-                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+exports.getCart = (req, res, next) => {
+    const { cartId } = req.param;
+    CartItemModel.find({ cartId })
+        .then(async (listProduct) => {
+            return res.json({
+                cart_id: cartId,
+                products: listProduct
             });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
-exports.getProduct = (req, res, next) => {
-    const prodId = req.params.productId;
-    // findById() can accept a string and Mongoose will
-    // automatically convert it to an Object Id
-    Product.findById(prodId)
-        .then(product => {
-            res.render('shop/product-detail', {
-                product: product,
-                pageTitle: product.title,
-                path: '/products'
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
-};
 
 exports.postCart = (req, res, next) => {
     const { id } = req.currentUser;
@@ -74,7 +37,7 @@ exports.postCart = (req, res, next) => {
                     await CartItemModel.create({
                         cart_id: idCart,
                         product_id,
-                        quantity: 1,
+                        quantity: products.quantity,
                         price: product.price
                     })
                 }
@@ -120,7 +83,7 @@ exports.updateCart = (req, res, next) => {
 };
 
 exports.deleteCart = (req, res, next) => {
-    const { id } = req.currentUser;
+    // const { id } = req.currentUser;
     const { cart_id } = req.body;
 
     CartModel.delete(cart_id)
@@ -137,118 +100,95 @@ exports.deleteCart = (req, res, next) => {
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
-    const prodId = req.body.productId;
-    req.user
-        .removeFromCart(prodId)
-        .then(result => {
-            res.redirect('/cart');
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+    const { cart_id, product_id } = req.body;
+    CartItemModel.delete({
+        cart_id,
+        product_id
+    }).then(result => {
+        return res.json({
+            isSuccedd: true
         });
+    }).catch((error) => {
+        return res.json({
+            err: error
+        });
+    })
 };
 
 exports.postOrder = (req, res, next) => {
-    const token = req.body.stripeToken;
-    let totalSum = 0;
+    const { id } = req.currentUser;
+    const { cart_id } = req.body;
 
-    req.user
-        .populate('cart.items.productId')
-        .execPopulate()
-        .then(user => {
-            user.cart.items.forEach(p => {
-                totalSum += p.quantity * p.productId.price;
+    CartItemModel.find({ cart_id })
+        .then(async (listProduct) => {
+            if (checkEmptyArray(listProduct)) {
+                await OrderModel.create({ id })
+                for (item of products) {
+                    const { product_id } = item;
+                    await OrderLineModel.create({
+                        cart_id: idCart,
+                        product_id,
+                        quantity: listProduct.quantity,
+                        price: listProduct.price
+                    })
+                }
+            }
+            return res.json({
+                id: idCart
             });
-            const products = user.cart.items.map(i => {
-                return { quantity: i.quantity, product: { ...i.productId._doc } };
-            });
-            const order = new Order({
-                user: {
-                    email: req.user.email,
-                    userId: req.user    // Mongoose will pick the id
-                },
-                products: products
-            });
-            return order.save();
-        })
-        .then(result => {
-            const charge = stripe.charges.create({
-                amount: totalSum * 100,
-                currency: 'usd',
-                description: 'Your Order',
-                source: token,
-                metadata: { order_id: result._id.toString() }
-            });
-            return req.user.clearCart();
-        })
-        .then(() => {
-            res.redirect('/orders');
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
 exports.getOrders = (req, res, next) => {
-    Order.find({ "user.userId": req.user._id })
-        .then(orders => {
-            res.render('shop/orders', {
-                path: '/orders',
-                pageTitle: 'Your Orders',
-                orders: orders
+    const { orderId } = req.param;
+    OrderLineModel.find({ orderId })
+        .then(async (listProduct) => {
+            return res.json({
+                order_id: orderId,
+                products: listProduct
             });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
-exports.getInvoice = (req, res, next) => {
-    const orderId = req.params.orderId;
-    Order.findById(orderId)
-        .then(order => {
-            if (!order) {
-                return next(new Error('No order found'));
+exports.postReview = (req, res, next) => {
+    const { id } = req.currentUser;
+    const { category_id, product_id, rating, comment } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
+
+    ReviewModel.create({ user_id: id, category_id, product_id, rating, comment })
+        .then(async (idCart) => {
+            if (checkEmptyArray(products)) {
+                for (item of products) {
+                    const { product_id } = item;
+                    const product = await ProductModel.findOne({ id: product_id })
+                    await CartItemModel.create({
+                        cart_id: idCart,
+                        product_id,
+                        quantity: products.quantity,
+                        price: product.price
+                    })
+                }
             }
-            if (order.user.userId.toString() !== req.user._id.toString()) {
-                return next(new Error('Unauthorized'));
-            }
-            const invoiceName = 'invoice-' + orderId + '.pdf';
-            const invoicePath = path.join('data', 'invoices', invoiceName);
-
-            const pdfDoc = new PDFDocument();
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"'); // replace inline with attachment for download
-            // pipe into a writable stream
-            pdfDoc.pipe(fs.createWriteStream(invoicePath));
-            pdfDoc.pipe(res);
-
-            pdfDoc.fontSize(26).text('Invoice', {
-                underline: true
+            return res.json({
+                id: idCart
             });
-            pdfDoc.fontSize(14).text('--------------------------');
-            let totalPrice = 0;
-            order.products.forEach(prod => {
-                totalPrice += prod.quantity * prod.product.price;
-                pdfDoc.fontSize(14).text(
-                    prod.product.title +
-                    ' - ' +
-                    prod.quantity +
-                    ' x ' +
-                    '$' +
-                    prod.product.price
-                );
-            });
-            pdfDoc.text('--------------------------');
-            pdfDoc.fontSize(20).text('Total Price: $' + totalPrice);
-
-            pdfDoc.end();
         })
-        .catch(err => next(err));
+        .catch(err => {
+            return res.json({
+                err: err
+            });
+        });
 };
