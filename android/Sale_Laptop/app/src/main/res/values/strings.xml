@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Sale_Laptop</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="app_market_link">link\n</string>
+    <string name="todo">TODO</string>
+    <string name="account_admin_or_user">Tài khoản ADMIN hoặc USER</string>
+    <string name="enter_account">Nhập tài khoản</string>
+    <string name="enter_password">Nhập mật khẩu</string>
+    <string name="re_enter_password">Nhập lại mật khẩu</string>
+    <string name="enter_username">Nhập tên người dùng </string>
+    <string name="gmail_or_phone_number">…@gmail.com hoặc số điện thoại</string>
+    <string name="remember_account">Ghi nhớ tài khoản</string>
+    <string name="forgot_password">Quên mật khẩu ?</string>
+    <string name="you_do_not_have_an_account_yet">Bạn chưa có tài khoản Đăng Ký</string>
+    <string name="register">Đăng Ký</string>
+    <string name="you_already_have_a_login_account">Bạn đã có tài khoản Đăng Nhập</string>
+    <string name="login">Đăng Nhập</string>
+    <string name="register_or_login">Đăng Ký hoặc Đăng Nhập</string>
+    <string name="username_cannot_be_empty">Username không được rỗng</string>
+    <string name="password_cannot_be_empty">Mật khẩu không được rỗng và phải lớn hơn 5 ký tự</string>
+    <string name="username_cannot_email">Username phải có định dạng email hoặc là số điện thoại</string>
+    <string name="username_out_range">Số điện thoại phải từ 9 đến 11 số</string>
+    <string name="do_not_use_special_characters">Không sử dụng các ký tự đặc biệt</string>
+    <string name="request_password_reset">Yêu cầu cấp lại mật khẩu</string>
+    <string name="please_re_enter_your_account_information">Vui lòng nhập lại thông tin tài khoản của bạn</string>
+    <string name="retrieve_password">LẤY LẠI MẬT KHẨU</string>
+
+</resources>
