@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.RegisterActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_cover_photo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_48"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_48"
+        android:layout_weight="0.2"
+        app:cardCornerRadius="@dimen/dp_8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_cover_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_cover_photo" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txt_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_36"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_cover_photo" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        app:layout_constraintBottom_toTopOf="@+id/iv_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_register"
+        app:layout_constraintVertical_bias="0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_enter_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_27"
+                android:layout_marginTop="@dimen/dp_12"
+                android:text="@string/enter_username"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edt_enter_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_27"
+                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_27"
+                android:autofillHints="true"
+                android:background="@drawable/edit_text_border"
+                android:hint="@string/do_not_use_special_characters"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/dp_8"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintStart_toStartOf="@id/txt_enter_username"
+                app:layout_constraintTop_toBottomOf="@id/txt_enter_username" />
+
+            <TextView
+                android:id="@+id/txt_enter_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_27"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/enter_account"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edt_enter_username" />
+
+            <EditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_27"
+                android:autofillHints="true"
+                android:background="@drawable/edit_text_border"
+                android:hint="@string/gmail_or_phone_number"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/dp_8"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/txt_enter_account"
+                app:layout_constraintTop_toBottomOf="@+id/txt_enter_account" />
+
+            <TextView
+                android:id="@+id/txt_enter_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_27"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/enter_password"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_user_name" />
+
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:autofillHints="true"
+                android:background="@drawable/edit_text_border"
+                android:drawableEnd="@drawable/ic_off_eye_24"
+                android:hint="@string/enter_password"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:padding="@dimen/dp_8"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="@id/edit_user_name"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/edit_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/txt_enter_password" />
+
+            <TextView
+                android:id="@+id/txt_re_enter_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_27"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/re_enter_password"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_password" />
+
+            <EditText
+                android:id="@+id/edit_re_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:autofillHints="true"
+                android:background="@drawable/edit_text_border"
+                android:drawableEnd="@drawable/ic_off_eye_24"
+                android:hint="@string/re_enter_password"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:padding="@dimen/dp_8"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="@id/edit_user_name"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/edit_user_name"
+                app:layout_constraintTop_toBottomOf="@+id/txt_re_enter_password" />
+
+            <CheckBox
+                android:id="@+id/cb_remember_account"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginStart="-6dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/remember_account"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintStart_toStartOf="@id/edit_user_name"
+                app:layout_constraintTop_toBottomOf="@id/edit_re_password" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_register"
+                android:layout_width="@dimen/dp_146"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@drawable/rounded_button"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_8"
+                android:text="@string/register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cb_remember_account" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toTopOf="@+id/txt_have_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_2"
+        android:layout_marginStart="@dimen/dp_22"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:background="#D9D9D9"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_logo"
+        app:layout_constraintEnd_toStartOf="@id/iv_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_logo" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_2"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_22"
+        android:background="#D9D9D9"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_logo"
+        app:layout_constraintTop_toTopOf="@+id/iv_logo" />
+
+    <TextView
+        android:id="@+id/txt_have_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:text="@string/you_already_have_a_login_account"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
