@@ -4,10 +4,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
 const multer = require('multer');
-
-const errorController = require('./controllers/error');
 const shopController = require('./controllers/shop.controller');
-const auth = require('../middleware/auth.middleware');
+const auth = require('./middleware/auth.middleware');
 const adminRoutes = require('./routes/admin.route');
 const shopRoutes = require('./routes/shop.route');
 const authRoutes = require('./routes/auth.route');
@@ -34,7 +32,9 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')) 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -50,13 +50,5 @@ app.post('/create-order', auth(), shopController.postOrder);
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
-app.use(errorController.get404);
-app.use((error, req, res, next) => {
-    console.log(error);
-    res.status(500).render('500', {
-        pageTitle: 'Error!',
-        path: '/500'
-    });
-});
 
 app.listen(3000);

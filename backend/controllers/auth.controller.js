@@ -1,256 +1,162 @@
-const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-const sendgridTransport = require('nodemailer-sendgrid-transport');
+// const nodemailer = require('nodemailer');
+// const sendgridTransport = require('nodemailer-sendgrid-transport');
 const { validationResult } = require('express-validator/check');
-const User = require('../models/user');
 const UserModel = require('../models/user.model');
+const credentialModel = require('../models/credential.model');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const transporter = nodemailer.createTransport(sendgridTransport({
-    auth: {
-        api_key: 'SG.asT5R0LJSsOsGhR0VseMSw.lu2lWTKbuAllkd15qgjBs1j0SfldA16B6VFkFVXBwn0'
-    }
-}));
+// const transporter = nodemailer.createTransport(sendgridTransport({
+//     auth: {
+//         api_key: 'SG.asT5R0LJSsOsGhR0VseMSw.lu2lWTKbuAllkd15qgjBs1j0SfldA16B6VFkFVXBwn0'
+//     }
+// }));
 
-exports.getLogin = (req, res, next) => {
-    let message = req.flash('error');
-    if (message.length > 0) {
-        message = message[0];
-    } else {
-        message = null;
-    }
-    res.render('auth/login', {
-        path: '/login',
-        pageTitle: 'Login',
-        errorMessage: message,
-        oldInput: {
-            email: '',
-            password: ''
-        },
-        validationErrors: []
-    });
-};
-
-exports.getSignup = (req, res, next) => {
-    let message = req.flash('error');
-    if (message.length > 0) {
-        message = message[0];
-    } else {
-        message = null;
-    }
-    res.render('auth/signup', {
-        path: '/signup',
-        pageTitle: 'Signup',
-        errorMessage: message,
-        oldInput: {
-            email: '',
-            password: '',
-            confirmPassword: ''
-        },
-        validationErrors: []
-    });
-};
+const passwwordDefault = '123456789';
+let userSail = {
+    user_id: null,
+    hasher: '10',
+    password_hash: '',
+    password_salt: '10'
+}
 
 exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('auth/login', {
-            path: '/login',
-            pageTitle: 'Login',
-            errorMessage: errors.array()[0].msg,
-            oldInput: {
-                email: email,
-                password: password
-            },
-            validationErrors: errors.array()
-        });
-    }
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
 
     UserModel.findOne({ email: email })
-        .then(user => {
-            if (!user) {
-                return res.status(422).render('auth/login', {
-                    path: '/login',
-                    pageTitle: 'Login',
-                    errorMessage: 'Invalid email or password',
-                    oldInput: {
-                        email: email,
-                        password: password
-                    },
-                    validationErrors: []
-                });
-            }
-            bcrypt.compare(password, user.password)
+        .then(async (user) => {
+            if (!user || !password) return res.json({
+                err: null
+            });
+            const passwordResult = await credentialModel.findOne({ user_id: user.id })
+
+            bcrypt.compare(password, passwordResult.password_hash)
                 .then(doMatch => {
-                    if (doMatch) {
-                        req.session.isLoggedIn = true;
-                        req.session.user = user;
-                        return req.session.save(err => {
-                            return res.json(user);
-                        });
-                    }
-                    return res.status(422).render('auth/login', {
-                        path: '/login',
-                        pageTitle: 'Login',
-                        errorMessage: 'Invalid email or password',
-                        oldInput: {
-                            email: email,
-                            password: password
-                        },
-                        validationErrors: []
-                    });
+                    const secretKey = process.env.SECRET_JWT || "";
+                    user.id = `${user.id}`
+                    const token = doMatch ? jwt.sign({ ...user }, secretKey, { expiresIn: 60 * 60 }) : '';
+                    res.json({
+                        data: {
+                            token: token
+                        }
+                    })
                 })
                 .catch(err => {
-                    console.log(err)
-                    res.redirect('/login');
+                    return res.json({
+                        err: err
+                    });
                 });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
 exports.postSignup = (req, res, next) => {
-    const { slug, email, name, avatar, bio, company } = req.body;
+    const { slug, email, name, avatar, bio, company, password } = req.body;
     const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
 
     bcrypt.hash(password, 12)
-        .then(hashedPassword => {
-            const createUser = UserModel.create({
+        .then(async (hashedPassword) => {
+            const idUser = await UserModel.create({
                 slug, email, name, avatar, bio, company
             })
-            return createUser;
-        })
-        .then(result => {
-            res.json({
-                id: result
+            userSail.password_hash = hashedPassword
+            userSail.user_id = idUser
+            if (idUser) await credentialModel.create(userSail)
+            return res.json({
+                id: idUser
             });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
 exports.postLogout = (req, res, next) => {
-    req.session.destroy(err => {
-        console.log(err);
-        res.redirect('/');
-    });
-};
-
-exports.getReset = (req, res, next) => {
-    let message = req.flash('error');
-    if (message.length > 0) {
-        message = message[0];
-    } else {
-        message = null;
-    }
-    res.render('auth/reset', {
-        path: '/reset',
-        pageTitle: 'Reset Password',
-        errorMessage: message
+    return res.json({
+        isSuccess: true
     });
 };
 
 exports.postReset = (req, res, next) => {
-    crypto.randomBytes(32, (err, buffer) => {
-        if (err) {
-            console.log(err);
-            return res.redirect('/reset');
-        }
-        const token = buffer.toString('hex');
-        User.findOne({ email: req.body.email })
-            .then(user => {
-                if (!user) {
-                    req.flash('error', 'No account with that email');
-                    return res.redirect('/reset');
-                }
-                user.resetToken = token;
-                user.resetTokenExpiration = Date.now() + 3600000; // the value of 1 hr in ms
-                return user.save();
-            })
-            .then(result => {
-                res.redirect('/');
-                transporter.sendMail({
-                    to: req.body.email,
-                    from: 'shop@node-complete.com',
-                    subject: 'Password reset',
-                    html: `
-                        <p>You requested a password reset</p>
-                        <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password</p>
-                    `
-                });
-            })
-            .catch(err => {
-                const error = new Error(err);
-                error.httpStatusCode = 500;
-                return next(error);
-            });
+    const { email } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
     });
-};
 
-exports.getNewPassword = (req, res, next) => {
-    const token = req.params.token;
-    User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
-        .then(user => {
-            if (!user) {
-                return res.redirect('/');
-            }
-            let message = req.flash('error');
-            if (message.length > 0) {
-                message = message[0];
-            } else {
-                message = null;
-            }
-            res.render('auth/new-password', {
-                path: '/new-password',
-                pageTitle: 'New Password',
-                errorMessage: message,
-                userId: user._id.toString(),
-                passwordToken: token
+    UserModel.findOne({ email: email })
+        .then(async (user) => {
+            if (!user) return res.json({
+                err: null
             });
+            bcrypt.hash(passwwordDefault, 12)
+                .then(async (hashedPassword) => {
+                    userSail.password_hash = hashedPassword
+                    userSail.user_id = user.id
+                    await credentialModel.create(userSail)
+                    return res.json({
+                        id: user.id
+                    });
+                })
+                .catch(err => {
+                    return res.json({
+                        err: err
+                    });
+                });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };
 
 exports.postNewPassword = (req, res, next) => {
-    const newPassword = req.body.password;
-    const userId = req.body.userId;
-    const passwordToken = req.body.passwordToken;
-    let resetUser;
+    const { email } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
 
-    User.findOne({
-        resetToken: passwordToken,
-        resetTokenExpiration: { $gt: Date.now() },
-        _id: userId
-    })
-        .then(user => {
-            resetUser = user;
-            return bcrypt.hash(newPassword, 12);
-        })
-        .then(hashedPassword => {
-            resetUser.password = hashedPassword;
-            resetUser.resetToken = undefined;
-            resetUser.resetTokenExpiration = undefined;
-            return resetUser.save();
-        })
-        .then(result => {
-            res.redirect('/login');
+    UserModel.findOne({ email: email })
+        .then(async (user) => {
+            if (!user) return res.json({
+                err: null
+            });
+            bcrypt.hash(passwwordDefault, 12)
+                .then(async (hashedPassword) => {
+                    userSail.password_hash = hashedPassword
+                    userSail.user_id = user.id
+                    await credentialModel.create(userSail)
+                    return res.json({
+                        id: user.id
+                    });
+                })
+                .catch(err => {
+                    return res.json({
+                        err: err
+                    });
+                });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
         });
 };

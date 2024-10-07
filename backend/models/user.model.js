@@ -1,6 +1,6 @@
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
-// const Role = require('../utils/userRoles.utils');
 
 class UserModel {
     tableUser = 'users';
@@ -22,15 +22,16 @@ class UserModel {
         return result[0];
     }
 
-    create = async ({ slug, email, name, avatar, bio, company, age = 0 }) => {
+    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, age = 0 }) => {
         const sqlUser = `INSERT INTO ${this.tableUser}
-        (slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-        const resultuser = await query(sqlUser, [slug, email, name, avatar, bio, company, 1, 0, age]);
-        const sqlCredentials = `INSERT INTO ${this.tableCredentials}
-        (provider_key, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)`;
-        const result = await query(sqlCredentials, [slug, email, name, avatar, bio, company, 1, 0, age]);
-        const affectedRows = resultuser ? resultuser.affectedRows : 0;
-        return affectedRows;
+        (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const idUser = uuidv4();
+        try {
+            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
+            return idUser;
+        } catch (error) { console.log(error); }
+        return null;
     }
 
     update = async (params, id) => {

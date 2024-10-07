@@ -23,9 +23,13 @@ class CartItemsModel {
     create = async ({ cart_id, product_id, price, quantity }) => {
         const sqlUser = `INSERT INTO ${this.tableCartItem}
         (cart_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
-        const resultuser = await query(sqlUser, [cart_id, product_id, price, quantity]);
-        const affectedRows = resultuser ? resultuser.affectedRows : 0;
-        return affectedRows;
+        try {
+            const resultuser = await query(sqlUser, [cart_id, product_id, price, quantity]);
+            const affectedRows = resultuser ? resultuser.affectedRows : 0;
+            return affectedRows;
+        } catch (error) {
+            return null
+        }
     }
 
     update = async (params, id) => {
@@ -37,10 +41,14 @@ class CartItemsModel {
 
     delete = async (id) => {
         const sql = `DELETE FROM ${this.tableCartItem}
-        WHERE id = ?`;
-        const result = await query(sql, [id]);
-        const affectedRows = result ? result.affectedRows : 0;
-        return affectedRows;
+        WHERE cart_id = ?`;
+        try {
+            const result = await query(sql, [id]);
+            const affectedRows = result ? result.affectedRows : 0;
+            return affectedRows;
+        } catch (error) {
+            return null;
+        }
     }
 }
 

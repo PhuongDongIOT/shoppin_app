@@ -1,21 +1,29 @@
 const express = require('express');
-const adminController = require('../controllers/admin');
+const adminController = require('../controllers/admin.controller');
 const auth = require('../middleware/auth.middleware');
-const { createUserSchema, updateUserSchema, validateLogin } = require('../middleware/validators/userValidator.middleware');
+const { createCategorySchema } = require('../middleware/validators/categoryValidator.middleware');
+const { createProductSchema, updateProductSchema } = require('../middleware/validators/productValidator.middleware');
 
 const router = express.Router();
 
 router.post(
+    '/add-category',
+    createCategorySchema,
+    // auth(),
+    adminController.postAddCategory
+);
+
+router.post(
     '/add-product',
-    createUserSchema,
+    createProductSchema,
     // auth(),
     adminController.postAddProduct
 );
-router.get('product/:productId', auth(), adminController.getEditProduct);
+// router.get('product/:productId', auth(), adminController.getEditProduct);
 router.post(
     '/edit-product',
-    createUserSchema,
-    auth(),
+    updateProductSchema,
+    // auth(),
     adminController.postEditProduct
 );
 router.delete('/product/:productId', auth(), adminController.deleteProduct);

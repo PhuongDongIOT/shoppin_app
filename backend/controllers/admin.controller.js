@@ -1,185 +1,112 @@
 const fileHelper = require('../util/file');
 const { validationResult } = require('express-validator/check');
-const Product = require('../models/product');
+const Product = require('../models/product.model');
 const ProductModel = require('../models/product.model');
+const CategoryModel = require('../models/category.model');
 
-exports.getAddProduct = (req, res, next) => {
-    res.render('admin/edit-product', {
-        pageTitle: 'Add Product',
-        path: '/admin/add-product',
-        editing: false,
-        hasError: false,
-        errorMessage: null,
-        validationErrors: []
+exports.postAddCategory = (req, res, next) => {
+    const { parent_category, slug, name, description } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
     });
+    CategoryModel.create({
+        parent_category, slug, name, description
+    }).then(async (idCategory) => {
+        return res.json({
+            id: idCategory
+        });
+    }).catch(error => {
+        return res.json({
+            err: error
+        });
+    })
+};
+
+exports.postDeleteCategory = (req, res, next) => {
+    const { id } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
+    CategoryModel.delete({
+        id
+    }).then(async (idCategory) => {
+        return res.json({
+            isSuccedd: true
+        });
+    }).catch(error => {
+        return res.json({
+            err: error
+        });
+    })
 };
 
 exports.postAddProduct = (req, res, next) => {
-    const title = req.body.title;
-    const image = req.file;
-    const price = req.body.price;
-    const description = req.body.description;
-    const userId = req.body.userId;
-    if (!image) {
-        return res.status(422).render('admin/edit-product', {
-            pageTitle: 'Add Product',
-            path: '/admin/add-product',
-            editing: false,
-            hasError: true,
-            product: {
-                title: title,
-                price: price,
-                description: description
-            },
-            errorMessage: 'Attached file is not an image',
-            validationErrors: []
-        });
-    }
+    const { category_id, title, slug, summary, description, price, created_by, image } = req.body;
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('admin/edit-product', {
-            pageTitle: 'Add Product',
-            path: '/admin/add-product',
-            editing: false,
-            hasError: true,
-            product: {
-                title: title,
-                price: price,
-                description: description
-            },
-            errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array()
-        });
-    }    
-    const imageUrl = image.path;
-
+    if (!errors.isEmpty()) return res.json({
+        err: errors
+    });
+    const imageUrl = image?.path ?? null;
     ProductModel.create({
-        title: title,
-        price: price,
-        description: description,
-        imageUrl: imageUrl,
-        userId: userId
+        category_id,
+        title,
+        slug,
+        picture: imageUrl,
+        summary,
+        description,
+        price,
+        created_by
     }).then(result => {
         return res.json({
             id: result
         });
-    }).catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
+    }).catch(errors => {
+        return res.json({
+            err: errors
+        });
     });
 };
 
-exports.getEditProduct = (req, res, next) => {
-    const editMode = req.query.edit;
-    if (!editMode) {
-        return res.redirect('/');
-    }
-    const prodId = req.params.productId;
-    Product.findById(prodId)
-        .then(product => {
-            if (!product) {
-                return res.redirect('/');
-            }
-            res.render('admin/edit-product', {
-                pageTitle: 'Edit Product',
-                path: '/admin/edit-product',
-                editing: editMode,
-                product: product,
-                hasError: false,
-                errorMessage: null,
-                validationErrors: []
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
-};
-
 exports.postEditProduct = (req, res, next) => {
-    const prodId = req.body.productId;
-    const updatedTitle = req.body.title;
-    // const updatedImageUrl = req.body.imageUrl;
-    const image = req.file;
-    const updatedPrice = req.body.price;
-    const updatedDescription = req.body.description;
+    const { id, category_id, title, slug, summary, description, price, created_by, image } = req.body;
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).render('admin/edit-product', {
-            pageTitle: 'Edit Product',
-            path: '/admin/edit-product',
-            editing: true,
-            hasError: true,
-            product: {
-                title: updatedTitle,
-                // imageUrl: updatedImageUrl,
-                price: updatedPrice,
-                description: updatedDescription,
-                _id: prodId
-            },
-            errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array()
+    if (!errors.isEmpty() || id) return res.json({
+        err: errors
+    });
+    const imageUrl = image?.path ?? null;
+    ProductModel.update({
+        category_id,
+        title,
+        slug,
+        picture: imageUrl,
+        summary,
+        description,
+        price,
+        created_by
+    }, id).then(result => {
+        return res.json({
+            id: result
         });
-    }
-
-    Product.findById(prodId)
-        .then(product => {
-            if (product.userId.toString() !== req.user._id.toString()) {
-                return res.redirect('/');
-            }
-            product.title = updatedTitle;
-            product.price = updatedPrice;
-            product.description = updatedDescription;
-            if (image) {
-                fileHelper.deleteFile(product.imageUrl);
-                product.imageUrl = image.path;
-            }
-            return product.save().then(result => {
-                console.log('Updated Product');
-                res.redirect('/admin/products');
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+    }).catch(errors => {
+        return res.json({
+            err: errors
         });
-};
-
-exports.getProducts = (req, res, next) => {
-    Product.find({ userId: req.user._id })
-        .then(products => {
-            res.render('admin/products', {
-                prods: products,
-                pageTitle: 'Admin Products',
-                path: '/admin/products'
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
+    });
 };
 
 exports.deleteProduct = (req, res, next) => {
-    const prodId = req.params.productId;
-    Product.findById(prodId)
-        .then(product => {
-            if (!product) {
-                return next(new Error('Product not found'));
-            }
-            fileHelper.deleteFile(product.imageUrl);
-            return Product.deleteOne({ _id: prodId, userId: req.user._id })
-        })
-        .then(() => {
-            res.status(200).json({ message: 'Success!' });
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Failure!' });
+    const { productId } = req.params;
+    ProductModel.delete(productId).then(result => {
+        return res.json({
+            isSuccedd: true
         });
+    }).catch(errors => {
+        return res.json({
+            err: errors
+        });
+    });
 };

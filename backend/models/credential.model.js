@@ -1,9 +1,10 @@
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
 class CredentialModel {
     tableCredential = 'credentials';
-
+    
     find = async (params = {}) => {
         let sql = `SELECT * FROM ${this.tableCredential}`;
         if (!Object.keys(params).length) return await query(sql);
@@ -20,12 +21,14 @@ class CredentialModel {
         return result[0];
     }
 
-    create = async ({ provider_id, provider_id, user_id, hasher, password_hash, password_salt }) => {
+    create = async ({ user_id, hasher, password_hash, password_salt }) => {
         const sqlCredential = `INSERT INTO ${this.tableCredential}
-        (provider_id, provider_id, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?, ?)`;
-        const resultuser = await query(sqlCredential, [provider_id, provider_id, user_id, hasher, password_hash, password_salt]);
-        const affectedRows = resultuser ? resultuser.affectedRows : 0;
-        return affectedRows;
+        (provider_id, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)`;
+        try {
+            const resultuser = await query(sqlCredential, [uuidv4(), user_id, hasher, password_hash, password_salt]);
+            const affectedRows = resultuser ? resultuser.affectedRows : 0;
+            return affectedRows;
+        } catch (error) { console.log(error) }
     }
 
     update = async (params, id) => {

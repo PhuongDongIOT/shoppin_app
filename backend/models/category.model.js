@@ -1,8 +1,9 @@
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
 class CategoryModel {
-    tableCategory = 'carts';
+    tableCategory = 'categories';
 
     find = async (params = {}) => {
         let sql = `SELECT * FROM ${this.tableCategory}`;
@@ -20,12 +21,16 @@ class CategoryModel {
         return result[0];
     }
 
-    create = async ({ parent_category, slug, name, description }) => {
-        const sqlCart = `INSERT INTO ${this.tableCategory}
-        (parent_category, slug, name, description) VALUES (?, ?, ?, ?, ?)`;
-        const resultCart = await query(sqlCart, [parent_category, slug, name, description]);
-        const affectedRows = resultCart ? resultCart.affectedRows : 0;
-        return affectedRows;
+    create = async ({ parent_category = null, slug = null, name, description = null }) => {
+        const sqlCategory = `INSERT INTO ${this.tableCategory}
+        (id, parent_category, slug, name, description) VALUES (?, ?, ?, ?, ?)`;
+        try {
+            const idCategory = uuidv4();
+            await query(sqlCategory, [idCategory, parent_category, slug, name, description]);
+            return idUser;
+        } catch (error) {
+            return null
+        }
     }
 
     update = async (params, id) => {

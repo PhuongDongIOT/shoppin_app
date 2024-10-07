@@ -2,8 +2,11 @@ const fs = require('fs');
 const path = require('path');
 const PDFDocument = require('pdfkit');
 const stripe = require('stripe')('sk_test_dcVHL86Zd2TjE8fOwFkcQO4e00JGCZhQw5');
-const Product = require('../models/product');
-const Order = require('../models/order');
+const ProductModel = require('../models/product.model');
+const CartModel = require('../models/cart.model');
+const CartItemModel = require('../models/cart-item.model');
+const Order = require('../models/order.model');
+const { checkEmptyArray } = require('../utils/array.utils');
 
 const ITEMS_PER_PAGE = 2;
 
@@ -45,7 +48,7 @@ exports.getProduct = (req, res, next) => {
     // automatically convert it to an Object Id
     Product.findById(prodId)
         .then(product => {
-            res.render('shop/product-detail', { 
+            res.render('shop/product-detail', {
                 product: product,
                 pageTitle: product.title,
                 path: '/products'
@@ -58,94 +61,78 @@ exports.getProduct = (req, res, next) => {
         });
 };
 
-exports.getIndex = (req, res, next) => {
-    const page = +req.query.page || 1; // (|| 1) handles the default value when there isn't query parameters
-    let totalItems;
-
-    Product.find()
-        .countDocuments()
-        .then(numProducts => {
-            totalItems = numProducts;
-            return Product.find()
-                .skip((page - 1) * ITEMS_PER_PAGE)
-                .limit(ITEMS_PER_PAGE)
-        })
-        .then(products => {
-            res.render('shop/index', {
-                prods: products,
-                pageTitle: 'Shop',
-                path: '/',
-                currentPage: page,
-                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-                hasPreviousPage: page > 1,
-                nextPage: page + 1,
-                previousPage: page - 1,
-                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
-};
-
-exports.getCart = (req, res, next) => {
-    req.user
-        .populate('cart.items.productId')
-        .execPopulate() // populate itself does not return a promise
-        .then(user => {
-            const products = user.cart.items;
-            res.render('shop/cart', {
-                path: '/cart',
-                pageTitle: 'Your Cart',
-                products: products
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
-};
-
-exports.getCheckout = (req, res, next) => {
-    req.user
-    .populate('cart.items.productId')
-    .execPopulate() // populate itself does not return a promise
-    .then(user => {
-        const products = user.cart.items;
-        let total = 0;
-        products.forEach(p => {
-            total += p.quantity * p.productId.price;
-        });
-        res.render('shop/checkout', {
-            path: '/checkout',
-            pageTitle: 'Checkout',
-            products: products,
-            totalSum: total
-        });
-    })
-    .catch(err => {
-        const error = new Error(err);
-        error.httpStatusCode = 500;
-        return next(error);
-    });
-};
-
 exports.postCart = (req, res, next) => {
-    const prodId = req.body.productId;
-    Product.findById(prodId)
-        .then(product => {
-            return req.user.addToCart(product);
-        })
-        .then(result => {
-            res.redirect('/cart');
+    const { id } = req.currentUser;
+    const { products } = req.body;
+
+    CartModel.create({ created_by: id, status: 1 })
+        .then(async (idCart) => {
+            if (checkEmptyArray(products)) {
+                for (item of products) {
+                    const { product_id } = item;
+                    const product = await ProductModel.findOne({ id: product_id })
+                    await CartItemModel.create({
+                        cart_id: idCart,
+                        product_id,
+                        quantity: 1,
+                        price: product.price
+                    })
+                }
+            }
+            return res.json({
+                id: idCart
+            });
         })
         .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
+            return res.json({
+                err: err
+            });
+        });
+};
+
+exports.updateCart = (req, res, next) => {
+    // const { id } = req.currentUser;
+    const { products, cart_id } = req.body;
+
+    CartItemModel.delete(cart_id)
+        .then(async () => {
+            if (checkEmptyArray(products)) {
+                for (item of products) {
+                    const { product_id } = item;
+                    const product = await ProductModel.findOne({ id: product_id })
+                    await CartItemModel.create({
+                        cart_id: cart_id,
+                        product_id,
+                        quantity: 1,
+                        price: product.price
+                    })
+                }
+            }
+            return res.json({
+                id: idCart
+            });
+        })
+        .catch(err => {
+            return res.json({
+                err: err
+            });
+        });
+};
+
+exports.deleteCart = (req, res, next) => {
+    const { id } = req.currentUser;
+    const { cart_id } = req.body;
+
+    CartModel.delete(cart_id)
+        .then(async () => {
+            return res.json({
+                isSuccedd: true
+            });
+        })
+        .catch(err => {
+            return res.json({
+                err: err
+            });
         });
 };
 
@@ -164,13 +151,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-    // Get the payment token ID submitted by the form
     const token = req.body.stripeToken;
     let totalSum = 0;
 
     req.user
         .populate('cart.items.productId')
-        .execPopulate() // populate itself does not return a promise
+        .execPopulate()
         .then(user => {
             user.cart.items.forEach(p => {
                 totalSum += p.quantity * p.productId.price;

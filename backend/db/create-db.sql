@@ -8,10 +8,10 @@ DROP TABLE IF EXISTS credentials;
 
 CREATE TABLE IF NOT EXISTS credentials (
     provider_id BINARY(16) PRIMARY KEY,
-    provider_key VARCHAR(20) UNIQUE NOT NULL,
+    provider_key VARCHAR(20),
     user_id BINARY(16) NOT NULL,
     hasher VARCHAR(10) NOT NULL,
-    password_hash VARCHAR(50) NOT NULL,
+    password_hash VARCHAR(200) NOT NULL,
     password_salt VARCHAR(10)
 );
 
@@ -19,8 +19,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE IF NOT EXISTS users (
     id BINARY(16) PRIMARY KEY,
-    slug VARCHAR(25) UNIQUE NOT NULL,
-    mail VARCHAR(50) UNIQUE NOT NULL,
+    slug VARCHAR(25),
     name VARCHAR(50) NOT NULL,
     avatar VARCHAR(10),
     loacale JSON,

@@ -1,3 +1,5 @@
+
+const { v4: uuidv4 } = require('uuid');
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
@@ -20,12 +22,18 @@ class CartModel {
         return result[0];
     }
 
-    create = async ({ id, created_by, status }) => {
+    create = async ({ created_by = null, status = 1 }) => {
         const sqlCart = `INSERT INTO ${this.tableCart}
         (id, created_by, status) VALUES (?, ?, ?)`;
-        const resultCart = await query(sqlCart, [id, created_by, status]);
-        const affectedRows = resultCart ? resultCart.affectedRows : 0;
-        return affectedRows;
+        try {
+            const idCart = uuidv4();
+            await query(sqlCart, [idCart, created_by, status]);
+            return idCart;
+        } catch (error) {
+            console.log(error);
+            
+            return null;
+        }
     }
 
     update = async (params, id) => {
