@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Định nghĩa phần nền của ImageButton -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white"/> <!-- Màu nền -->
+            <stroke
+                android:width="2dp"
+                android:color="@android:color/black"/> <!-- Màu và độ dày viền -->
+        </shape>
+    </item>
+</layer-list>

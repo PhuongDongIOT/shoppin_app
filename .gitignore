@@ -23,18 +23,19 @@ backend/package-lock.json
 backend/jspm_packages/
 
 # android
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+android/Sale_Laptop/*.iml
+android/Sale_Laptop/.gradle
+android/Sale_Laptop/local.properties
+android/Sale_Laptop/.idea/caches
+android/Sale_Laptop/.idea/deploymentTargetSelector.xml
+android/Sale_Laptop/.idea/libraries
+android/Sale_Laptop/.idea/modules.xml
+android/Sale_Laptop/.idea/workspace.xml
+android/Sale_Laptop/.idea/navEditor.xml
+android/Sale_Laptop/.idea/assetWizardSettings.xml
+android/Sale_Laptop/.DS_Store
+android/Sale_Laptop/build
+android/Sale_Laptop/captures
+android/Sale_Laptop/.externalNativeBuild
+android/Sale_Laptop/.cxx
+android/Sale_Laptop/local.properties

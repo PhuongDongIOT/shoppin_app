@@ -2,6 +2,8 @@
 <resources>
     <color name="blue_sky">#35AAA4</color>
     <color name="blue_sea">#0D2BEA</color>
+    <color name="selectedColor">#D69D00</color>
+    <color name="unselectedColor">#303030</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
