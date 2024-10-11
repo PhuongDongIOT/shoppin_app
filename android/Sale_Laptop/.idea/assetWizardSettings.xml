@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/visibility_off/baseline_visibility_off_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/home/baseline_home_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,7 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_off_eye_24" />
+                            <entry key="outputName" value="ic_home_36" />
                             <entry key="sourceFile" value="$USER_HOME$/Downloads/image_login.svg" />
                           </map>
                         </option>

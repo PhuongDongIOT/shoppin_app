@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.0"
+dotsindicator = "5.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -22,6 +23,7 @@ cronetEmbedded = "119.6045.31"
 activity = "1.9.2"
 
 [libraries]
+dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

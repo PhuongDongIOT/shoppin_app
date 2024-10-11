@@ -103,7 +103,9 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
      * @param targetActivity Activity đích.
      */
     public void navigateTo(Class<?> targetActivity) {
-        startActivity(new Intent(this, targetActivity));
+        final Intent intent = new Intent(this, targetActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
     /**
@@ -115,6 +117,7 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
     public void navigateToWithData(Class<?> targetActivity, Bundle bundle) {
         final Intent intent = new Intent(this, targetActivity);
         intent.putExtras(bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 

@@ -17,7 +17,7 @@ public class BaseApiClient {
     private static Retrofit retrofit;
 
     // Singleton Retrofit instance
-    public static Retrofit getClient() {
+    public static Retrofit getInstance() {
         if (retrofit == null) {
             // Tạo Gson instance
             final Gson gson = new GsonBuilder()

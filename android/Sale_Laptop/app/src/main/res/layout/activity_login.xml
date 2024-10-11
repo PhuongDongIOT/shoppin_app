@@ -36,7 +36,7 @@
         android:layout_marginTop="@dimen/dp_18"
         android:text="@string/login"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp_36"
+        android:textSize="@dimen/sp_34"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_cover_photo" />

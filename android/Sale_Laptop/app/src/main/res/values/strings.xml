@@ -32,5 +32,13 @@
     <string name="request_password_reset">Yêu cầu cấp lại mật khẩu</string>
     <string name="please_re_enter_your_account_information">Vui lòng nhập lại thông tin tài khoản của bạn</string>
     <string name="retrieve_password">LẤY LẠI MẬT KHẨU</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="thank_you_for_your_trust_and_choosing_the_product">Cảm ơn bạn đã tin tưởng và chọn sản phẩm</string>
+    <string name="home_page">Trang chủ</string>
+    <string name="information">Thông tin</string>
+    <string name="purchase_order">Đơn mua</string>
+    <string name="account">Tài khoản</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
