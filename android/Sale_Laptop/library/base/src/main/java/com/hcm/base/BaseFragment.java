@@ -21,6 +21,18 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
     private View mRootView;
     protected V mViewModel;
 
+    protected abstract void setupUI();
+
+    protected abstract void setupAction();
+
+    protected abstract void setupData();
+
+    protected void setup() {
+        setupUI();
+        setupAction();
+        setupData();
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -28,6 +40,7 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
         if (context instanceof BaseActivity) {
             this.mActivity = (BaseActivity<BaseViewModel>) context;
         }
+
     }
 
     @Nullable
@@ -128,7 +141,6 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
     }
 
     public interface Callback {
-
         void onFragmentAttached();
 
         void onFragmentDetached(String tag);

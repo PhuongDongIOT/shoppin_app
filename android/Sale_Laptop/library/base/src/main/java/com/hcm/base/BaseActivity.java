@@ -41,6 +41,9 @@ public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
     }
 
     protected void setup() {
