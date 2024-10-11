@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,6 +37,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 //            mViewModel.login(binding.editUserName.getText().toString(),
 //                    binding.editPassword.getText().toString());
             navigateTo(OnboardingActivity.class);
+            finishActivity();
         });
         setOnClickListener(binding.txtForgotPassword, view -> navigateTo(ForgotPasswordActivity.class));
     }
