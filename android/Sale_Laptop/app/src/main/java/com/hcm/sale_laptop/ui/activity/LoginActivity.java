@@ -31,9 +31,10 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     @Override
     protected void setupAction() {
         setOnClickListener(binding.btnLogin, view -> {
-            showProgressBar();
-            mViewModel.login(binding.editUserName.getText().toString(),
-                    binding.editPassword.getText().toString());
+//            showProgressBar();
+//            mViewModel.login(binding.editUserName.getText().toString(),
+//                    binding.editPassword.getText().toString());
+            navigateTo(OnboardingActivity.class);
         });
         setOnClickListener(binding.txtForgotPassword, view -> navigateTo(ForgotPasswordActivity.class));
     }

@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Sale_Laptop"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.OnboardingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.ForgotPasswordActivity"
             android:exported="false" />
         <activity

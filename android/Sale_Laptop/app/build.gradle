@@ -53,4 +53,5 @@ dependencies {
     implementation project(':library:base')
     implementation libs.rxandroid
     implementation libs.rxjava
+    implementation libs.dotsindicator
 }

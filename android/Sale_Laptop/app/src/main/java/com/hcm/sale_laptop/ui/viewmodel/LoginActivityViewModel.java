@@ -9,20 +9,19 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.R;
-import com.hcm.sale_laptop.ui.login.LoginFormState;
 import com.hcm.sale_laptop.utils.AppUtils;
 
 public class LoginActivityViewModel extends BaseViewModel {
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+//    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
 
     LoginActivityViewModel(@NonNull Application application) {
         super(application);
     }
 
-    LiveData<LoginFormState> getLoginFormState() {
-        return loginFormState;
-    }
+//    LiveData<LoginFormState> getLoginFormState() {
+//        return loginFormState;
+//    }
 
     public void login(String username, String password) {
         if (AppUtils.checkStringNullOrEmpty(username)) {
