@@ -109,6 +109,7 @@ exports.postReset = (req, res, next) => {
                 .then(async (hashedPassword) => {
                     userSail.password_hash = hashedPassword
                     userSail.user_id = user.id
+                    await credentialModel.delete(user.id)
                     await credentialModel.create(userSail)
                     return res.json({
                         id: user.id
@@ -143,6 +144,7 @@ exports.postNewPassword = (req, res, next) => {
                 .then(async (hashedPassword) => {
                     userSail.password_hash = hashedPassword
                     userSail.user_id = user.id
+                    await credentialModel.delete(user.id)
                     await credentialModel.create(userSail)
                     return res.json({
                         id: user.id
