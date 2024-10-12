@@ -27,8 +27,10 @@ class CategoryModel {
         try {
             const idCategory = uuidv4();
             await query(sqlCategory, [idCategory, parent_category, slug, name, description]);
-            return idUser;
+            return idCategory;
         } catch (error) {
+            console.log(error);
+            
             return null
         }
     }

@@ -25,10 +25,12 @@ class CredentialModel {
         const sqlCredential = `INSERT INTO ${this.tableCredential}
         (provider_id, user_id, hasher, password_hash, password_salt) VALUES (?, ?, ?, ?, ?)`;
         try {
-            const resultuser = await query(sqlCredential, [uuidv4(), user_id, hasher, password_hash, password_salt]);
-            const affectedRows = resultuser ? resultuser.affectedRows : 0;
-            return affectedRows;
-        } catch (error) { console.log(error) }
+            const idCredential = uuidv4();
+            await query(sqlCredential, [idCredential, user_id, hasher, password_hash, password_salt]);
+            return idCredential;
+        } catch (error) { 
+            return null
+        }
     }
 
     update = async (params, id) => {
@@ -40,7 +42,7 @@ class CredentialModel {
 
     delete = async (id) => {
         const sql = `DELETE FROM ${this.tableCredential}
-        WHERE id = ?`;
+        WHERE user_id = ?`;
         const result = await query(sql, [id]);
         const affectedRows = result ? result.affectedRows : 0;
         return affectedRows;

@@ -5,7 +5,7 @@ exports.createCategorySchema = [
         .isLength({ min: 1 })
         .isAlphanumeric()
         .trim(),
-    body('image', 'Please enter a valid image')
+    body('slug', 'Please enter a valid slug')
         .isLength({ min: 1 })
         .isAlphanumeric()
         .trim()
