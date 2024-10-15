@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
     avatar VARCHAR(10),
     loacale JSON,
     email VARCHAR(100) UNIQUE NOT NULL,
-    role VARCHAR(10) DEFAULT 'SuperUser',
+    role VARCHAR(10) DEFAULT 'user',
     age INT(10) DEFAULT 0,
     created_at DATE,
     updated_at DATE,

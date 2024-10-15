@@ -13,7 +13,7 @@ router.post(
 router.post(
     '/signup',
     createUserSchema,
-    auth(),
+    // auth(),
     authController.postSignup
 );
 router.post('/logout', authController.postLogout);

@@ -8,12 +8,14 @@ const ReviewModel = require('../models/review.model');
 const { checkEmptyArray } = require('../utils/array.utils');
 
 exports.getCart = (req, res, next) => {
-    const { cartId } = req.param;
-    CartItemModel.find({ cartId })
+    const { cartId } = req.params;
+    CartItemModel.find({ cart_id: cartId })
         .then(async (listProduct) => {
             return res.json({
-                cart_id: cartId,
-                products: listProduct
+                data: {
+                    cart_id: cartId,
+                    products: listProduct
+                }
             });
         })
         .catch(err => {
@@ -32,18 +34,21 @@ exports.postCart = (req, res, next) => {
         .then(async (idCart) => {
             if (checkEmptyArray(products)) {
                 for (item of products) {
-                    const { product_id } = item;
+
+                    const { product_id, quantity } = item;
                     const product = await ProductModel.findOne({ id: product_id })
                     await CartItemModel.create({
-                        cart_id: idCart,
+                        cart_id: idCart.toString(),
                         product_id,
-                        quantity: products.quantity,
+                        quantity: quantity,
                         price: product.price
                     })
                 }
             }
             return res.json({
-                id: idCart
+                data: {
+                    id: idCart
+                }
             });
         })
         .catch(err => {
@@ -118,23 +123,32 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
     const { id } = req.currentUser;
     const { cart_id } = req.body;
-
     CartItemModel.find({ cart_id })
         .then(async (listProduct) => {
+            const oderId = await OrderModel.create({ user_id: id.toString() })
+            console.log(oderId);
             if (checkEmptyArray(listProduct)) {
-                await OrderModel.create({ id })
-                for (item of products) {
-                    const { product_id } = item;
-                    await OrderLineModel.create({
-                        cart_id: idCart,
+                for (item of listProduct) {
+                    const { product_id, quantity, price } = item;
+                    console.log({
+                        cart_id: oderId,
                         product_id,
-                        quantity: listProduct.quantity,
-                        price: listProduct.price
+                        quantity: quantity,
+                        price: price
+                    });
+                    
+                    await OrderLineModel.create({
+                        cart_id: oderId,
+                        product_id,
+                        quantity: quantity,
+                        price: price
                     })
                 }
             }
             return res.json({
-                id: idCart
+                data: {
+                    id: oderId
+                }
             });
         })
         .catch(err => {
@@ -145,12 +159,14 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-    const { orderId } = req.param;
-    OrderLineModel.find({ orderId })
+    const { orderId } = req.params;
+    OrderLineModel.find({ order_id: orderId })
         .then(async (listProduct) => {
             return res.json({
-                order_id: orderId,
-                products: listProduct
+                data: {
+                    order_id: orderId,
+                    products: listProduct
+                }
             });
         })
         .catch(err => {
@@ -169,21 +185,11 @@ exports.postReview = (req, res, next) => {
     });
 
     ReviewModel.create({ user_id: id, category_id, product_id, rating, comment })
-        .then(async (idCart) => {
-            if (checkEmptyArray(products)) {
-                for (item of products) {
-                    const { product_id } = item;
-                    const product = await ProductModel.findOne({ id: product_id })
-                    await CartItemModel.create({
-                        cart_id: idCart,
-                        product_id,
-                        quantity: products.quantity,
-                        price: product.price
-                    })
-                }
-            }
+        .then(async (idReview) => {
             return res.json({
-                id: idCart
+                data: {
+                    id: idReview
+                }
             });
         })
         .catch(err => {

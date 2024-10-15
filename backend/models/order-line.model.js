@@ -3,10 +3,10 @@ const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../utils/common.utils');
 
 class OrderLineModel {
-    tableCartItem = 'cart_items';
+    tableCartItem = 'order_lines';
 
-    find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableCartItem}`;
+    find = async (params = {}) => {        
+        let sql = `SELECT CONVERT(products.id, NCHAR) product_id, CONVERT(products.category_id, NCHAR) category_id, title, slug, picture, summary, description, order_lines.price, order_lines.quantity, created_by FROM ${this.tableCartItem} LEFT JOIN products ON products.id = order_lines.product_id`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;
@@ -23,7 +23,7 @@ class OrderLineModel {
 
     create = async ({ cart_id, product_id, price, quantity }) => {
         const sqlUser = `INSERT INTO ${this.tableCartItem}
-        (cart_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
+        (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
         const resultuser = await query(sqlUser, [cart_id, product_id, price, quantity]);
         const affectedRows = resultuser ? resultuser.affectedRows : 0;
         return affectedRows;

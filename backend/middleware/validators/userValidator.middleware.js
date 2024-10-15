@@ -7,7 +7,6 @@ exports.loginUserSchema = [
         .normalizeEmail(),
     body('password', 'Password has to be valid')
         .isLength({ min: 8 })
-        .isAlphanumeric()
         .trim()
 ];
 
@@ -21,7 +20,6 @@ exports.createUserSchema = [
         .trim(),
     body('password', 'Password has to be valid')
         .isLength({ min: 8 })
-        .isAlphanumeric()
         .trim()
 ];
 
@@ -29,5 +27,8 @@ exports.resetUserSchema = [
     body('email')
         .isEmail()
         .withMessage('Please enter a valid email')
-        .normalizeEmail()
+        .normalizeEmail(),
+    body('password', 'Password has to be valid')
+        .isLength({ min: 8 })
+        .trim()
 ];

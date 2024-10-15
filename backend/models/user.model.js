@@ -22,13 +22,13 @@ class UserModel {
         return result[0];
     }
 
-    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, age = 0 }) => {
+    create = async ({ slug = null, email = null, name = null, avatar = null, bio = null, company = null, role = 'user' }) => {
         const sqlUser = `INSERT INTO ${this.tableUser}
-        (id, slug, email, name, avatar, bio, company, is_active, is_deleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        (id, slug, email, name, avatar, bio, company, is_active, is_deleted, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         try {
             const idUser = uuidv4();
-            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0]);
+            await query(sqlUser, [idUser, slug, email, name, avatar, bio, company, 1, 0, role]);
             return idUser;
         } catch (error) { console.log(error); }
         return null;

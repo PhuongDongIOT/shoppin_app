@@ -62,7 +62,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
-    const { slug, email, name, avatar, bio, company, password } = req.body;
+    const { slug, email, name, avatar, bio, company, password , role} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
         err: errors
@@ -71,13 +71,15 @@ exports.postSignup = (req, res, next) => {
     bcrypt.hash(password, 12)
         .then(async (hashedPassword) => {
             const idUser = await UserModel.create({
-                slug, email, name, avatar, bio, company
+                slug, email, name, avatar, bio, company, role
             })
             userSail.password_hash = hashedPassword
             userSail.user_id = idUser
             if (idUser) await credentialModel.create(userSail)
             return res.json({
-                id: idUser
+                data: {
+                    id: idUser
+                }
             });
         })
         .catch(err => {
@@ -89,7 +91,9 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
     return res.json({
-        isSuccess: true
+        data: {
+            isSuccess: true
+        }
     });
 };
 
@@ -112,7 +116,9 @@ exports.postReset = (req, res, next) => {
                     await credentialModel.delete(user.id)
                     await credentialModel.create(userSail)
                     return res.json({
-                        id: user.id
+                        data: {
+                            id: user.id.toString()
+                        }
                     });
                 })
                 .catch(err => {
@@ -129,7 +135,7 @@ exports.postReset = (req, res, next) => {
 };
 
 exports.postNewPassword = (req, res, next) => {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
         err: errors
@@ -140,14 +146,16 @@ exports.postNewPassword = (req, res, next) => {
             if (!user) return res.json({
                 err: null
             });
-            bcrypt.hash(passwwordDefault, 12)
+            bcrypt.hash(password, 12)
                 .then(async (hashedPassword) => {
                     userSail.password_hash = hashedPassword
                     userSail.user_id = user.id
                     await credentialModel.delete(user.id)
                     await credentialModel.create(userSail)
                     return res.json({
-                        id: user.id
+                        data: {
+                            id: user.id.toString()
+                        }
                     });
                 })
                 .catch(err => {

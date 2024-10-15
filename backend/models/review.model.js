@@ -21,7 +21,7 @@ class ReviewModel {
         return result[0];
     }
 
-    create = async ({ user_id, category_id = null, product_id = null, rating = null, comment }) => {
+    create = async ({ user_id, category_id = null, product_id = null, order_id = null, rating = null, comment }) => {
         const sqlReview = `INSERT INTO ${this.tableReviews}
         (id, user_id, category_id, rating, product_id, comment) VALUES (?, ?, ?, ?, ?, ?)`;
         try {

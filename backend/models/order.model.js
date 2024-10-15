@@ -15,18 +15,18 @@ class OrderModel {
 
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `SELECT * FROM ${this.tableUser}
+        const sql = `SELECT * FROM ${this.tableOrder}
         WHERE ${columnSet}`;
         const result = await query(sql, [...values]);
         return result[0];
     }
 
     create = async ({ user_id }) => {
-        const sqlOrder = `INSERT INTO ${this.tableUser}
-        (id, user_id, is_deleted,status) VALUES (?, ?, ?)`;
+        const sqlOrder = `INSERT INTO ${this.tableOrder}
+        (id, user_id, is_deleted,status) VALUES (?, ?, ?, ?)`;
         try {
-            const oderId = uuidv4()
-            await query(sqlOrder, [user_id, 0, 1]);
+            const oderId = uuidv4();
+            await query(sqlOrder, [oderId, user_id, 0, 1]);
             return oderId;
         } catch (error) {
             return null;
@@ -35,13 +35,13 @@ class OrderModel {
 
     update = async (params, id) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `UPDATE user SET ${columnSet} WHERE id = ?`;
+        const sql = `UPDATE ${this.tableOrder} SET ${columnSet} WHERE id = ?`;
         const result = await query(sql, [...values, id]);
         return result;
     }
 
     delete = async (id) => {
-        const sql = `DELETE FROM ${this.tableUser}
+        const sql = `DELETE FROM ${this.tableOrder}
         WHERE id = ?`;
         const result = await query(sql, [id]);
         const affectedRows = result ? result.affectedRows : 0;

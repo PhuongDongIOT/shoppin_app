@@ -5,7 +5,7 @@ class CartItemsModel {
     tableCartItem = 'cart_items';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableCartItem}`;
+        let sql = `SELECT CONVERT(products.id, NCHAR) product_id, CONVERT(products.category_id, NCHAR) category_id, title, slug, picture, summary, description, cart_items.price, cart_items.quantity, created_by FROM ${this.tableCartItem} LEFT JOIN products ON products.id = cart_items.product_id`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;

@@ -6,7 +6,7 @@ class ProductModel {
     tableProductName = 'products';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableProductName}`;
+        let sql = `SELECT CONVERT(products.id, NCHAR) id, CONVERT(products.category_id, NCHAR) category_id, title, slug, picture, summary, description, price, created_by FROM ${this.tableProductName}`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;
@@ -15,7 +15,7 @@ class ProductModel {
 
     findOne = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `SELECT * FROM ${this.tableProductName}
+        const sql = `SELECT CONVERT(products.id, NCHAR) id, CONVERT(products.category_id, NCHAR) category_id, title, slug, picture, summary, description, price, created_by FROM ${this.tableProductName}
         WHERE ${columnSet}`;
         const result = await query(sql, [...values]);
         return result[0];
