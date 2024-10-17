@@ -12,15 +12,19 @@ exports.getCart = (req, res, next) => {
     CartItemModel.find({ cart_id: cartId })
         .then(async (listProduct) => {
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     cart_id: cartId,
                     products: listProduct
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
@@ -46,20 +50,23 @@ exports.postCart = (req, res, next) => {
                 }
             }
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     id: idCart
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error,
             });
         });
 };
 
 exports.updateCart = (req, res, next) => {
-    // const { id } = req.currentUser;
     const { products, cart_id } = req.body;
 
     CartItemModel.delete(cart_id)
@@ -77,45 +84,63 @@ exports.updateCart = (req, res, next) => {
                 }
             }
             return res.json({
-                id: idCart
+                success: true,
+                error: null,
+                data: {
+                    id: idCart
+                }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
 
 exports.deleteCart = (req, res, next) => {
-    // const { id } = req.currentUser;
     const { cart_id } = req.body;
 
     CartModel.delete(cart_id)
         .then(async () => {
             return res.json({
-                isSuccedd: true
+                success: true,
+                error: null,
+                data: {
+                    isSuccedd: true
+                }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error,
             });
         });
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const { cart_id, product_id } = req.body;
+
     CartItemModel.delete({
         cart_id,
         product_id
     }).then(result => {
         return res.json({
-            isSuccedd: true
+            success: true,
+            error: null,
+            data: {
+                isSuccedd: true
+            }
         });
-    }).catch((error) => {
+    }).catch(error => {
         return res.json({
-            err: error
+            success: false,
+            data: null,
+            error: error
         });
     })
 };
@@ -123,20 +148,22 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
     const { id } = req.currentUser;
     const { cart_id } = req.body;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        success: false,
+        data: null,
+        error: errors
+    });
+
     CartItemModel.find({ cart_id })
         .then(async (listProduct) => {
+
+            await CartModel.delete({ id: cart_id }, cart_id)
             const oderId = await OrderModel.create({ user_id: id.toString() })
-            console.log(oderId);
             if (checkEmptyArray(listProduct)) {
                 for (item of listProduct) {
                     const { product_id, quantity, price } = item;
-                    console.log({
-                        cart_id: oderId,
-                        product_id,
-                        quantity: quantity,
-                        price: price
-                    });
-                    
                     await OrderLineModel.create({
                         cart_id: oderId,
                         product_id,
@@ -146,16 +173,49 @@ exports.postOrder = (req, res, next) => {
                 }
             }
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     id: oderId
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
+};
+
+exports.deleteOrder = (req, res, next) => {
+    const { order_id, message } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.json({
+        success: false,
+        data: null,
+        error: errors
+    });
+
+    OrderModel.delete({
+        id: order_id,
+        message
+    }).then(result => {
+        return res.json({
+            success: true,
+            error: null,
+            data: {
+                isSuccedd: true
+            }
+        });
+    }).catch(error => {
+        return res.json({
+            success: false,
+            data: null,
+            error: error
+        });
+    })
 };
 
 exports.getOrders = (req, res, next) => {
@@ -163,15 +223,19 @@ exports.getOrders = (req, res, next) => {
     OrderLineModel.find({ order_id: orderId })
         .then(async (listProduct) => {
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     order_id: orderId,
                     products: listProduct
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
@@ -181,20 +245,26 @@ exports.postReview = (req, res, next) => {
     const { category_id, product_id, rating, comment } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
-        err: errors
+        success: false,
+        data: null,
+        error: errors
     });
 
     ReviewModel.create({ user_id: id, category_id, product_id, rating, comment })
         .then(async (idReview) => {
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     id: idReview
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };

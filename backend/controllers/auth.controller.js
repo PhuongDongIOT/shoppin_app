@@ -27,13 +27,17 @@ exports.postLogin = (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
-        err: errors
+        success: false,
+        data: null,
+        error: errors
     });
 
     UserModel.findOne({ email: email })
         .then(async (user) => {
             if (!user || !password) return res.json({
-                err: null
+                success: false,
+                data: null,
+                error: {}
             });
             const passwordResult = await credentialModel.findOne({ user_id: user.id })
 
@@ -43,29 +47,37 @@ exports.postLogin = (req, res, next) => {
                     user.id = `${user.id}`
                     const token = doMatch ? jwt.sign({ ...user }, secretKey, { expiresIn: 60 * 60 }) : '';
                     res.json({
+                        success: true,
+                        error: null,
                         data: {
-                            token: token
+                            token: token,
+                            user: user
                         }
                     })
                 })
-                .catch(err => {
+                .catch(error => {
                     return res.json({
-                        err: err
+                        success: false,
+                        error: error
                     });
                 });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
 
 exports.postSignup = (req, res, next) => {
-    const { slug, email, name, avatar, bio, company, password , role} = req.body;
+    const { slug, email, name, avatar, bio, company, password, role } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
-        err: errors
+        success: false,
+        data: null,
+        error: errors
     });
 
     bcrypt.hash(password, 12)
@@ -77,20 +89,26 @@ exports.postSignup = (req, res, next) => {
             userSail.user_id = idUser
             if (idUser) await credentialModel.create(userSail)
             return res.json({
+                success: true,
+                error: null,
                 data: {
                     id: idUser
                 }
             });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
 
 exports.postLogout = (req, res, next) => {
     return res.json({
+        success: true,
+        error: null,
         data: {
             isSuccess: true
         }
@@ -101,35 +119,46 @@ exports.postReset = (req, res, next) => {
     const { email } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
-        err: errors
+        success: false,
+        data: null,
+        error: errors
     });
 
     UserModel.findOne({ email: email })
         .then(async (user) => {
             if (!user) return res.json({
-                err: null
+                success: false,
+                data: null,
+                error: {}
             });
             bcrypt.hash(passwwordDefault, 12)
                 .then(async (hashedPassword) => {
-                    userSail.password_hash = hashedPassword
-                    userSail.user_id = user.id
-                    await credentialModel.delete(user.id)
+                    userSail.password_hash = hashedPassword;
+                    const { id } = user;
+                    userSail.user_id = id
+                    await credentialModel.delete(id)
                     await credentialModel.create(userSail)
                     return res.json({
+                        success: true,
+                        error: null,
                         data: {
                             id: user.id.toString()
                         }
                     });
                 })
-                .catch(err => {
+                .catch(error => {
                     return res.json({
-                        err: err
+                        success: false,
+                        data: null,
+                        error: error
                     });
                 });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };
@@ -138,13 +167,17 @@ exports.postNewPassword = (req, res, next) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.json({
-        err: errors
+        success: false,
+        data: null,
+        error: errors
     });
 
     UserModel.findOne({ email: email })
         .then(async (user) => {
             if (!user) return res.json({
-                err: null
+                success: false,
+                data: null,
+                error: {}
             });
             bcrypt.hash(password, 12)
                 .then(async (hashedPassword) => {
@@ -153,20 +186,26 @@ exports.postNewPassword = (req, res, next) => {
                     await credentialModel.delete(user.id)
                     await credentialModel.create(userSail)
                     return res.json({
+                        success: true,
+                        error: null,
                         data: {
                             id: user.id.toString()
                         }
                     });
                 })
-                .catch(err => {
+                .catch(error => {
                     return res.json({
-                        err: err
+                        success: false,
+                        data: null,
+                        error: error
                     });
                 });
         })
-        .catch(err => {
+        .catch(error => {
             return res.json({
-                err: err
+                success: false,
+                data: null,
+                error: error
             });
         });
 };

@@ -38,15 +38,16 @@ class CartModel {
 
     update = async (params, id) => {
         const { columnSet, values } = multipleColumnSet(params)
-        const sql = `UPDATE user SET ${columnSet} WHERE id = ?`;
+        const sql = `UPDATE ${this.tableCart} SET ${columnSet} WHERE id = ?`;
         const result = await query(sql, [...values, id]);
         return result;
     }
 
-    delete = async (id) => {
-        const sql = `DELETE FROM ${this.tableCart}
+    delete = async (params, id) => {
+        const { columnSet, values } = multipleColumnSet(params)
+        const sql = `UPDATE ${this.tableCart} SET ${columnSet}
         WHERE id = ?`;
-        const result = await query(sql, [id]);
+        const result = await query(sql, [...values, id]);
         const affectedRows = result ? result.affectedRows : 0;
         return affectedRows;
     }

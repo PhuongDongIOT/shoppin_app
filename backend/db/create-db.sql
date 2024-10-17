@@ -59,7 +59,7 @@ DROP TABLE IF EXISTS products;
 CREATE TABLE IF NOT EXISTS products (
     id BINARY(16) PRIMARY KEY,
     category_id BINARY(16),
-    title BINARY(16),
+    title VARCHAR(200)
     slug VARCHAR(20) UNIQUE NOT NULL,
     picture VARCHAR(20),
     summary VARCHAR(20),
@@ -101,6 +101,7 @@ DROP TABLE IF EXISTS orders;
 CREATE TABLE IF NOT EXISTS orders (
     id BINARY(16) PRIMARY KEY,
     user_id BINARY(16) NOT NULL,
+    message VARCHAR(255),
     created_at DATE,
     is_deleted BIT,
     status INT

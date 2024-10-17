@@ -40,10 +40,10 @@ class OrderModel {
         return result;
     }
 
-    delete = async (id) => {
-        const sql = `DELETE FROM ${this.tableOrder}
+    delete = async ({id, message}) => {
+        const sql = `UPDATE ${this.tableOrder} SET is_deleted = 1, message = ?
         WHERE id = ?`;
-        const result = await query(sql, [id]);
+        const result = await query(sql, [message, id]);
         const affectedRows = result ? result.affectedRows : 0;
         return affectedRows;
     }
