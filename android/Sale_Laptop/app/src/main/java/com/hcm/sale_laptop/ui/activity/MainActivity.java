@@ -1,36 +1,28 @@
 package com.hcm.sale_laptop.ui.activity;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.navigation.NavigationBarView;
 import com.hcm.base.BaseActivity;
 import com.hcm.sale_laptop.R;
-import com.hcm.sale_laptop.databinding.ActivityHomeBinding;
+import com.hcm.sale_laptop.databinding.ActivityMainBinding;
 import com.hcm.sale_laptop.ui.fragment.AccountFragment;
 import com.hcm.sale_laptop.ui.fragment.HomeFragment;
 import com.hcm.sale_laptop.ui.fragment.InfoFragment;
 import com.hcm.sale_laptop.ui.fragment.OrdersFragment;
 import com.hcm.sale_laptop.ui.viewmodel.HomeActivityViewModel;
 
-public class HomeActivity extends BaseActivity<HomeActivityViewModel> {
+public class MainActivity extends BaseActivity<HomeActivityViewModel> {
 
-    private ActivityHomeBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // Load default fragment
         if (savedInstanceState == null) {
@@ -70,6 +62,7 @@ public class HomeActivity extends BaseActivity<HomeActivityViewModel> {
     protected void setupData() {
 
     }
+
     // Phương thức để load fragment
     private void loadFragment(Fragment fragment) {
         final FragmentManager fragmentManager = getSupportFragmentManager();

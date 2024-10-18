@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 public class SharedPrefManager {
     private static final String PREF_NAME = "app_prefs"; // Tên file SharedPreferences
     public static final String KEY_ONBOARDING_COMPLETED = "ONBOARDING_COMPLETED";
+    public static final String KEY_USER_NAME = "KEY_USER_NAME";
+    public static final String KEY_USER_PASSWORD = "KEY_USER_PASSWORD";
 
     private static SharedPrefManager instance;
     private final SharedPreferences sharedPreferences;

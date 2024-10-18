@@ -51,7 +51,7 @@ public class AppUtils {
     }
 
     public static String getTimestamp() {
-        return new SimpleDateFormat(Constants.TIMESTAMP_FORMAT, Locale.US).format(new Date());
+        return new SimpleDateFormat(Constants.DATA_FORMAT, Locale.US).format(new Date());
     }
 
     public static boolean isEmailValid(String email) {

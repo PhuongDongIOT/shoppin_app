@@ -21,6 +21,7 @@ timber = "5.0.1"
 library = "3.2.0-alpha11"
 cronetEmbedded = "119.6045.31"
 activity = "1.9.2"
+loggingInterceptor = "5.0.0-alpha.14"
 
 [libraries]
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
@@ -44,6 +45,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 library = { group = "androidx.databinding", name = "library", version.ref = "library" }
 cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronetEmbedded" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
