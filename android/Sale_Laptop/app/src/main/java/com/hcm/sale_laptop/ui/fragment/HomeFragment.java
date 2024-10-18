@@ -72,6 +72,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentViewModel> {
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_home;
+        return R.layout.activity_main;
     }
 }

@@ -29,6 +29,7 @@ public class BaseViewModel extends AndroidViewModel {
 
     /**
      * Phương thức để quản lý Disposable
+     *
      * @param disposable Disposable cần được thêm vào CompositeDisposable.
      */
     protected void addDisposable(Disposable disposable) {
@@ -37,6 +38,7 @@ public class BaseViewModel extends AndroidViewModel {
 
     /**
      * Phương thức để đặt trạng thái loading.
+     *
      * @param isLoading true nếu đang loading, ngược lại false.
      */
     protected void setLoading(boolean isLoading) {
@@ -45,6 +47,7 @@ public class BaseViewModel extends AndroidViewModel {
 
     /**
      * Phương thức để đặt thông báo lỗi.
+     *
      * @param errorMessage Thông báo lỗi cần hiển thị.
      */
     protected void setErrorMessage(String errorMessage) {

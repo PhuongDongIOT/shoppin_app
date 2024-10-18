@@ -9,7 +9,7 @@
     <View
         android:id="@+id/view_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
+        android:layout_height="@dimen/dp_46"
         android:background="#AADFEF"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +76,6 @@
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18"
         android:textStyle="bold"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vp" />
 
@@ -92,4 +91,37 @@
         app:layout_constraintTop_toBottomOf="@id/txt_classify"
         tools:listitem="@layout/item_brand" />
 
+    <View
+        android:id="@+id/view_discounted_products"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#AADFEF"
+        android:layout_marginTop="@dimen/dp_4"
+        app:layout_constraintBottom_toBottomOf="@id/rv_discounted_products"
+        app:layout_constraintTop_toBottomOf="@id/rv_brand" />
+
+    <TextView
+        android:id="@+id/txt_discounted_products"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginTop="@dimen/dp_1"
+        android:text="@string/discounted_products"
+        android:textColor="#5F5D5D"
+        android:textSize="@dimen/sp_18"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_discounted_products" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_discounted_products"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/txt_discounted_products"
+        tools:listitem="@layout/item_brand" />
 </androidx.constraintlayout.widget.ConstraintLayout>

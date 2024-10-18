@@ -34,13 +34,13 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.mContext = context;  // Gán context của Fragment
         if (context instanceof BaseActivity) {
             this.mActivity = (BaseActivity<BaseViewModel>) context;
         }
-
     }
 
     @Nullable

@@ -62,7 +62,7 @@ public class OnboardingActivity extends BaseActivity<OnboardingActivityViewModel
 
     private void pushToHomeActivity() {
         SharedPrefManager.getInstance(this).saveBoolean(SharedPrefManager.KEY_ONBOARDING_COMPLETED, true);
-        navigateTo(HomeActivity.class);
+        navigateTo(MainActivity.class);
         finishActivity();
     }
 

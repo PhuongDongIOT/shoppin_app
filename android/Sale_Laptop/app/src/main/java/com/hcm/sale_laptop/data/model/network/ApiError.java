@@ -7,14 +7,14 @@ import java.util.Objects;
 
 public class ApiError {
 
-    private int errorCode;
+    private final int errorCode;
 
     @Expose
     @SerializedName("message")
     private String message;
 
     @Expose
-    @SerializedName("status_code")
+    @SerializedName("statusCode")
     private String statusCode;
 
     public ApiError(int errorCode, String statusCode, String message) {
