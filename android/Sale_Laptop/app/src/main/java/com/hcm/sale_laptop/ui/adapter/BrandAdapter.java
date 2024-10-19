@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hcm.base.BaseViewHolder;
 import com.hcm.sale_laptop.R;
-import com.hcm.sale_laptop.data.model.BrandModel;
+import com.hcm.sale_laptop.data.model.other.BrandModel;
 
 import java.util.List;
 
 public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHolder> {
 
-    private final List<BrandModel> modelList;
+    private final List<BrandModel> listModel;
     private final Context context;
 
-    public BrandAdapter(List<BrandModel> modelList, Context context) {
-        this.modelList = modelList;
+    public BrandAdapter(List<BrandModel> listModel, Context context) {
+        this.listModel = listModel;
         this.context = context;
     }
 
@@ -35,16 +35,15 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
 
     @Override
     public void onBindViewHolder(@NonNull BrandViewHolder holder, int position) {
-        holder.onBind(position, modelList);
-//        holder.itemView
+        holder.onBind(position, listModel);
     }
 
     @Override
     public int getItemCount() {
-        return modelList.size();
+        return listModel.size();
     }
 
-    public static class BrandViewHolder extends BaseViewHolder {
+    public static class BrandViewHolder extends BaseViewHolder<BrandModel> {
         ImageView imageView;
         TextView textView;
 
@@ -55,11 +54,10 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        public <T> void onBind(int position, List<T> list) {
-            List<BrandModel> modelList = (List<BrandModel>) list;
-            imageView.setImageResource(modelList.get(position).getImageView());
-            textView.setText(modelList.get(position).getBrandName());
+        public void onBind(int position, List<BrandModel> list) {
+            final BrandModel model = list.get(position);
+            imageView.setImageResource(model.getImageView());
+            textView.setText(model.getBrandName());
         }
     }
 

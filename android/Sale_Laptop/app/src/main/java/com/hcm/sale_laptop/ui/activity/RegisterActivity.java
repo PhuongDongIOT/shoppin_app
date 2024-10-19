@@ -12,7 +12,7 @@ import com.hcm.base.BaseActivity;
 import com.hcm.sale_laptop.R;
 import com.hcm.sale_laptop.databinding.ActivityRegisterBinding;
 import com.hcm.sale_laptop.ui.viewmodel.RegisterActivityViewModel;
-import com.hcm.sale_laptop.ui.viewmodel.RegisterActivityViewModelFactory;
+import com.hcm.sale_laptop.ui.viewmodel.factory.RegisterActivityViewModelFactory;
 
 public class RegisterActivity extends BaseActivity<RegisterActivityViewModel> {
     private ActivityRegisterBinding binding;

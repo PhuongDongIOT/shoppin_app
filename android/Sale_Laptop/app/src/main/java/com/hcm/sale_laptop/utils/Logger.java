@@ -2,7 +2,7 @@ package com.hcm.sale_laptop.utils;
 
 import timber.log.Timber;
 
-public class AppLogger {
+public class Logger {
     public static void d(String s, Object... objects) {
         Timber.d(s, objects);
     }

@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.hcm.base.BaseActivity;
 import com.hcm.sale_laptop.R;
-import com.hcm.sale_laptop.data.enums.RoleUser;
+import com.hcm.sale_laptop.data.local.prefs.KeyPref;
 import com.hcm.sale_laptop.data.local.prefs.SharedPrefManager;
 import com.hcm.sale_laptop.databinding.ActivityLoginBinding;
 import com.hcm.sale_laptop.ui.viewmodel.LoginActivityViewModel;
-import com.hcm.sale_laptop.ui.viewmodel.LoginActivityViewModelFactory;
+import com.hcm.sale_laptop.ui.viewmodel.factory.LoginActivityViewModelFactory;
 import com.hcm.sale_laptop.utils.AppUtils;
 
 public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
@@ -42,8 +42,11 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
 
     @Override
     protected void setupUI() {
+        final SharedPrefManager shared = SharedPrefManager.getInstance(this);
+        final boolean isRememberAccount = shared.getBoolean(KeyPref.KEY_REMEMBER_ACCOUNT, false);
+        binding.cbRememberAccount.setChecked(isRememberAccount);
         configTextView();
-        configEditText();
+        configEditText(shared);
     }
 
     @Override
@@ -63,15 +66,14 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
             if (binding.cbRememberAccount.isChecked()) {
                 saveData(shared);
             }
-            if (model.getRoleUser() == RoleUser.USER) {
-                final boolean isFirstLogin = shared.getBoolean(SharedPrefManager.KEY_ONBOARDING_COMPLETED, false);
-                final Class<?> targetActivity = isFirstLogin ? OnboardingActivity.class : MainActivity.class;
+            if (model.getRoleUser() == null) {
+                final boolean onboardCompleted = shared.getBoolean(KeyPref.KEY_ONBOARDING_COMPLETED, false);
+                final Class<?> targetActivity = onboardCompleted ? MainActivity.class : OnboardingActivity.class;
                 navigateTo(targetActivity);
                 finishActivity();
-                return;
             }
 
-            finishActivity();
+//            finishActivity();
         });
 
     }
@@ -79,27 +81,29 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel> {
     private void saveData(SharedPrefManager shared) {
         final String userName = binding.editUserName.getText().toString();
         final String userPassword = binding.editPassword.getText().toString();
-        if (!AppUtils.checkStringNullOrEmpty(userName)) {
-            shared.saveString(SharedPrefManager.KEY_USER_NAME, userName);
+        shared.saveBoolean(KeyPref.KEY_REMEMBER_ACCOUNT, true);
+        if (!AppUtils.stringNullOrEmpty(userName)) {
+            shared.saveString(KeyPref.KEY_USER_NAME, userName);
         }
-        if (!AppUtils.checkStringNullOrEmpty(userPassword)) {
-            shared.saveString(SharedPrefManager.KEY_USER_PASSWORD, userPassword);
+        if (!AppUtils.stringNullOrEmpty(userPassword)) {
+            shared.saveString(KeyPref.KEY_USER_PASSWORD, userPassword);
         }
     }
 
-    private void configEditText() {
+    private void configEditText(SharedPrefManager sharedPrefManager) {
         final Drawable offIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_off_eye_24, null);
         final Drawable onIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_on_eye_24, null);
         configEditTextPassword(binding.editPassword, offIcon, onIcon);
-        final SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(this);
-        final String userName = sharedPrefManager.getString(SharedPrefManager.KEY_USER_NAME, "");
-        final String userPassword = sharedPrefManager.getString(SharedPrefManager.KEY_USER_NAME, "");
-        if (!AppUtils.checkStringNullOrEmpty(userName)) {
+        final String userName = sharedPrefManager.getString(KeyPref.KEY_USER_NAME, "");
+        final String userPassword = sharedPrefManager.getString(KeyPref.KEY_USER_NAME, "");
+        if (!AppUtils.stringNullOrEmpty(userName)) {
             binding.editUserName.setText(userName);
         }
-        if (!AppUtils.checkStringNullOrEmpty(userName)) {
+        if (!AppUtils.stringNullOrEmpty(userName)) {
             binding.editPassword.setText(userPassword);
         }
+        binding.editUserName.setText("adminad@gmail.com");
+        binding.editPassword.setText("admin@6666");
     }
 
     private void configTextView() {

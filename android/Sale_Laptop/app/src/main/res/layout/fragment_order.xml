@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E91E63"
-    tools:context=".ui.fragment.OrdersFragment">
+    tools:context=".ui.fragment.OrderFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

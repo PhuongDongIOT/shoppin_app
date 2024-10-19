@@ -1,10 +1,12 @@
-package com.hcm.sale_laptop.ui.viewmodel;
+package com.hcm.sale_laptop.ui.viewmodel.factory;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.hcm.sale_laptop.ui.viewmodel.RegisterActivityViewModel;
 
 public class RegisterActivityViewModelFactory implements ViewModelProvider.Factory {
 

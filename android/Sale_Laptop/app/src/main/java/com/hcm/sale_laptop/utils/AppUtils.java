@@ -70,7 +70,7 @@ public class AppUtils {
         return new String(buffer, StandardCharsets.UTF_8);
     }
 
-    public static boolean checkStringNullOrEmpty(String value) {
+    public static boolean stringNullOrEmpty(String value) {
         return value == null || value.isEmpty();
     }
 

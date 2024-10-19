@@ -4,12 +4,12 @@ public class BaseResponse <T> {
 
     private boolean success;
     private T data;
-    private Object errors;
+    private Object error;
 
     public BaseResponse(boolean success, T data, Object errors) {
         this.success = success;
         this.data = data;
-        this.errors = errors;
+        this.error = errors;
     }
 
     public boolean isSuccess() {
@@ -29,10 +29,10 @@ public class BaseResponse <T> {
     }
 
     public Object getErrors() {
-        return errors;
+        return error;
     }
 
     public void setErrors(Object errors) {
-        this.errors = errors;
+        this.error = errors;
     }
 }

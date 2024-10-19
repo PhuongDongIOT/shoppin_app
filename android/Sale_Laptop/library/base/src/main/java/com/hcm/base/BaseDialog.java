@@ -18,13 +18,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 public abstract class BaseDialog extends DialogFragment {
 
-    private BaseActivity<BaseViewModel> mActivity;
+    private BaseActivity mActivity;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
-            this.mActivity = (BaseActivity<BaseViewModel>) context;
+            this.mActivity = (BaseActivity) context;
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class BaseDialog extends DialogFragment {
         dismiss();
     }
 
-    public BaseActivity<BaseViewModel> getBaseActivity() {
+    public BaseActivity getBaseActivity() {
         return mActivity;
     }
 

@@ -9,9 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.R;
-import com.hcm.sale_laptop.data.model.UserModel;
-import com.hcm.sale_laptop.data.model.network.LoginRequest;
-import com.hcm.sale_laptop.data.model.network.LoginResponse;
+import com.hcm.sale_laptop.data.model.network.request.LoginRequest;
+import com.hcm.sale_laptop.data.model.network.response.LoginResponse;
+import com.hcm.sale_laptop.data.model.other.UserModel;
 import com.hcm.sale_laptop.data.repository.LoginRepository;
 import com.hcm.sale_laptop.utils.AppUtils;
 import com.hcm.sale_laptop.utils.Constants;
@@ -31,11 +31,11 @@ public class LoginActivityViewModel extends BaseViewModel {
     }
 
     public void login(String username, String password) {
-        if (AppUtils.checkStringNullOrEmpty(username)) {
+        if (AppUtils.stringNullOrEmpty(username)) {
             setErrorMessage(getStringResource(R.string.username_cannot_be_empty));
             return;
         }
-        if (AppUtils.checkStringNullOrEmpty(password) || !isPasswordValid(password)) {
+        if (AppUtils.stringNullOrEmpty(password) || !isPasswordValid(password)) {
             setErrorMessage(getStringResource(R.string.password_cannot_be_empty));
             return;
         }
@@ -53,8 +53,8 @@ public class LoginActivityViewModel extends BaseViewModel {
                 .doOnError(error -> setLoading(false))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleLoginResponse, throwable -> {
-                    setErrorMessage("Có lỗi khi kết nối với máy chủ");
-                   }
+                            setErrorMessage(throwable.getMessage());
+                        }
                 );
         addDisposable(disposable);
     }
@@ -65,12 +65,13 @@ public class LoginActivityViewModel extends BaseViewModel {
             setErrorMessage("Đăng nhập không thành công");
             return;
         }
-        final UserModel model = response.getUser();
+        final UserModel model = response.getData();
         if (model == null) {
             setErrorMessage("Đăng nhập không thành công");
             return;
         }
         Constants.setUserModel(model);
+        Constants.setToken(model.getToken());
         userModel.setValue(model);
     }
 

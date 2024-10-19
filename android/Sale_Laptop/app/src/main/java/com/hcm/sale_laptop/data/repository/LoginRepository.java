@@ -3,8 +3,8 @@ package com.hcm.sale_laptop.data.repository;
 import com.hcm.base.BaseRepository;
 import com.hcm.sale_laptop.data.api.ApiService;
 import com.hcm.sale_laptop.data.api.RetrofitClient;
-import com.hcm.sale_laptop.data.model.network.LoginRequest;
-import com.hcm.sale_laptop.data.model.network.LoginResponse;
+import com.hcm.sale_laptop.data.model.network.request.LoginRequest;
+import com.hcm.sale_laptop.data.model.network.response.LoginResponse;
 
 import io.reactivex.rxjava3.core.Single;
 

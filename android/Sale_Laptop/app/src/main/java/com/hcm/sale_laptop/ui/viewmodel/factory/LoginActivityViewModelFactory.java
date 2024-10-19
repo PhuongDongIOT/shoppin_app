@@ -1,4 +1,4 @@
-package com.hcm.sale_laptop.ui.viewmodel;
+package com.hcm.sale_laptop.ui.viewmodel.factory;
 
 
 import android.app.Application;
@@ -6,6 +6,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.hcm.sale_laptop.ui.viewmodel.LoginActivityViewModel;
 
 public class LoginActivityViewModelFactory implements ViewModelProvider.Factory {
     private final Application application;
