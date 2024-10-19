@@ -1,34 +1,17 @@
 package com.hcm.sale_laptop.ui.fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hcm.base.BaseFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.hcm.sale_laptop.R;
 
 
-public class InfoFragment extends BaseFragment {
-
-    @Override
-    protected void setupUI() {
-
-    }
-
-    @Override
-    protected void setupAction() {
-
-    }
-
-    @Override
-    protected void setupData() {
-
-    }
+public class InfoFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -37,8 +20,4 @@ public class InfoFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
-    @Override
-    protected int getLayoutResourceId() {
-        return 0;
-    }
 }

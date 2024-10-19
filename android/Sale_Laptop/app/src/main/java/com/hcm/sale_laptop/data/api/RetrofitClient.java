@@ -26,7 +26,7 @@ public class RetrofitClient {
 
             // Tạo interceptor để log thông tin request và response
             final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY); // Log toàn bộ body
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             // Tạo OkHttpClient với timeout
             final OkHttpClient okHttpClient = new OkHttpClient.Builder()

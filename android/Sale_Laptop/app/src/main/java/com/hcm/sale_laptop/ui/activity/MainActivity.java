@@ -7,15 +7,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hcm.base.BaseActivity;
+import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.R;
 import com.hcm.sale_laptop.databinding.ActivityMainBinding;
 import com.hcm.sale_laptop.ui.fragment.AccountFragment;
 import com.hcm.sale_laptop.ui.fragment.HomeFragment;
 import com.hcm.sale_laptop.ui.fragment.InfoFragment;
-import com.hcm.sale_laptop.ui.fragment.OrdersFragment;
-import com.hcm.sale_laptop.ui.viewmodel.HomeActivityViewModel;
+import com.hcm.sale_laptop.ui.fragment.OrderFragment;
 
-public class MainActivity extends BaseActivity<HomeActivityViewModel> {
+public class MainActivity extends BaseActivity<BaseViewModel> {
 
     private ActivityMainBinding binding;
 
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity<HomeActivityViewModel> {
                 fragment = new InfoFragment();
             }
             if (id == R.id.nav_orders) {
-                fragment = new OrdersFragment();
+                fragment = new OrderFragment();
             }
             if (id == R.id.nav_account) {
                 fragment = new AccountFragment();

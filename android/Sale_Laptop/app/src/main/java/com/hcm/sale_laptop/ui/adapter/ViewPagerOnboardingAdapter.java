@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hcm.base.BaseViewHolder;
 import com.hcm.sale_laptop.R;
 
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class ViewPagerOnboardingAdapter extends RecyclerView.Adapter<PagerVH> {
 
     private final List<String> stringList = new ArrayList<String>() {{
         add("Chào mừng bạn đến với cửa hàng của chúng tôi");
-        add("Giao hàng nhanh"); // red
-        add("Hàng chất lượng"); // blue
+        add("Giao hàng nhanh");
+        add("Hàng chất lượng");
     }};
 
     @NonNull
@@ -29,9 +30,7 @@ public class ViewPagerOnboardingAdapter extends RecyclerView.Adapter<PagerVH> {
 
     @Override
     public void onBindViewHolder(@NonNull PagerVH holder, int position) {
-        final View itemView = holder.itemView;
-        final TextView tvTitle = itemView.findViewById(R.id.txt_title);
-        tvTitle.setText(stringList.get(position));
+        holder.onBind(position, stringList);
     }
 
     @Override
@@ -40,9 +39,18 @@ public class ViewPagerOnboardingAdapter extends RecyclerView.Adapter<PagerVH> {
     }
 }
 
-class PagerVH extends RecyclerView.ViewHolder {
+class PagerVH extends BaseViewHolder<String> {
+    TextView textView;
+
     public PagerVH(@NonNull View itemView) {
         super(itemView);
+        textView = itemView.findViewById(R.id.txt_title);
     }
+
+    @Override
+    public void onBind(int position, List<String> list) {
+        textView.setText(list.get(position));
+    }
+
 }
 

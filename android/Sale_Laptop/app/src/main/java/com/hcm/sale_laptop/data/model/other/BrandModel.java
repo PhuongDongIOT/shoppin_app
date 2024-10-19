@@ -1,6 +1,4 @@
-package com.hcm.sale_laptop.data.model;
-
-import java.util.List;
+package com.hcm.sale_laptop.data.model.other;
 
 public class BrandModel {
     private Integer imageView;  // List chứa các resource ID của ảnh

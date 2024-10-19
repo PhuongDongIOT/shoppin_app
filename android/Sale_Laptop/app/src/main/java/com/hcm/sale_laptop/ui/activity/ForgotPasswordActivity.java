@@ -10,7 +10,7 @@ import com.hcm.base.BaseActivity;
 import com.hcm.sale_laptop.R;
 import com.hcm.sale_laptop.databinding.ActivityForgotPasswordBinding;
 import com.hcm.sale_laptop.ui.viewmodel.ForgotPasswordActivityViewModel;
-import com.hcm.sale_laptop.ui.viewmodel.ForgotPasswordActivityViewModelFactory;
+import com.hcm.sale_laptop.ui.viewmodel.factory.ForgotPasswordActivityViewModelFactory;
 
 public class ForgotPasswordActivity extends BaseActivity<ForgotPasswordActivityViewModel> {
 
