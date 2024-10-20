@@ -13,13 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewbinding.ViewBinding;
 
-public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<V extends BaseViewModel, B extends ViewBinding> extends Fragment {
 
     private Context mContext;
-    private BaseActivity<BaseViewModel> mActivity;
-    private View mRootView;
+    private BaseActivity<BaseViewModel, ViewBinding> mActivity;
     protected V mViewModel;
+    protected B mBinding;
 
     protected abstract void setupUI();
 
@@ -29,8 +30,8 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
 
     protected void setup() {
         setupUI();
-        setupAction();
         setupData();
+        setupAction();
     }
 
     @Override
@@ -39,7 +40,7 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
         super.onAttach(context);
         this.mContext = context;  // Gán context của Fragment
         if (context instanceof BaseActivity) {
-            this.mActivity = (BaseActivity<BaseViewModel>) context;
+            this.mActivity = (BaseActivity<BaseViewModel, ViewBinding>) context;
         }
     }
 
@@ -91,7 +92,7 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
         }
     }
 
-    public BaseActivity<BaseViewModel> getBaseActivity() {
+    public BaseActivity<BaseViewModel, ViewBinding> getBaseActivity() {
         return mActivity;
     }
 
@@ -144,6 +145,18 @@ public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
         void onFragmentAttached();
 
         void onFragmentDetached(String tag);
+    }
+
+    protected void showProgressBar() {
+        if (mActivity != null) {
+            mActivity.showProgressBar();
+        }
+    }
+
+    protected void hideProgressBar() {
+        if (mActivity != null) {
+            mActivity.hideProgressBar();
+        }
     }
 }
 

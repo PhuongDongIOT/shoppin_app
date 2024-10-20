@@ -83,6 +83,7 @@ public class UserModel {
 
     public void setRole(String role) {
         this.role = role;
+        setRoleUser(role);
     }
 
     public int getAge() {

@@ -15,15 +15,14 @@ import com.hcm.sale_laptop.ui.fragment.HomeFragment;
 import com.hcm.sale_laptop.ui.fragment.InfoFragment;
 import com.hcm.sale_laptop.ui.fragment.OrderFragment;
 
-public class MainActivity extends BaseActivity<BaseViewModel> {
+public class MainActivity extends BaseActivity<BaseViewModel, ActivityMainBinding> {
 
-    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
         // Load default fragment
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
@@ -38,7 +37,7 @@ public class MainActivity extends BaseActivity<BaseViewModel> {
 
     @Override
     protected void setupAction() {
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+        mBinding.bottomNavigation.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
             final int id = item.getItemId();
             if (id == R.id.nav_home) {

@@ -14,25 +14,24 @@ import com.hcm.sale_laptop.databinding.ActivityRegisterBinding;
 import com.hcm.sale_laptop.ui.viewmodel.RegisterActivityViewModel;
 import com.hcm.sale_laptop.ui.viewmodel.factory.RegisterActivityViewModelFactory;
 
-public class RegisterActivity extends BaseActivity<RegisterActivityViewModel> {
-    private ActivityRegisterBinding binding;
+public class RegisterActivity extends BaseActivity<RegisterActivityViewModel, ActivityRegisterBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
         setup();
     }
 
     @Override
     protected void setupUI() {
-        binding.btnRegister.setActivated(true);
+        mBinding.btnRegister.setActivated(true);
         configTextView();
         final Drawable offIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_off_eye_24, null);
         final Drawable onIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_on_eye_24, null);
-        configEditTextPassword(binding.editPassword, offIcon, onIcon);
-        configEditTextPassword(binding.editRePassword, offIcon, onIcon);
+        configEditTextPassword(mBinding.editPassword, offIcon, onIcon);
+        configEditTextPassword(mBinding.editRePassword, offIcon, onIcon);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class RegisterActivity extends BaseActivity<RegisterActivityViewModel> {
         final String login = getString(R.string.login);
         final SpannableString spannableString = new SpannableString(haveAccount);
         setUpSpannableString(spannableString, haveAccount, login, R.color.blue_sky, LoginActivity.class);
-        binding.txtHaveAccount.setText(spannableString);
-        binding.txtHaveAccount.setMovementMethod(LinkMovementMethod.getInstance());
+        mBinding.txtHaveAccount.setText(spannableString);
+        mBinding.txtHaveAccount.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

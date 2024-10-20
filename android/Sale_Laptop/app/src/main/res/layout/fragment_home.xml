@@ -183,7 +183,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_popular_product"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_500"
+            android:layout_height="wrap_content"
+            android:maxHeight="@dimen/dp_500"
+            app:layout_constraintHeight_max="@dimen/dp_500"
             android:layout_marginStart="@dimen/dp_6"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_6"

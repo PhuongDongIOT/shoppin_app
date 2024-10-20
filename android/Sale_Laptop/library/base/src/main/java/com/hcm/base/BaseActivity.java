@@ -25,12 +25,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 
-public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<V extends BaseViewModel, B extends ViewBinding> extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
     protected V mViewModel;
+
+    protected B mBinding;
 
     protected abstract void setupUI();
 
