@@ -12,15 +12,14 @@ import com.hcm.sale_laptop.databinding.ActivityForgotPasswordBinding;
 import com.hcm.sale_laptop.ui.viewmodel.ForgotPasswordActivityViewModel;
 import com.hcm.sale_laptop.ui.viewmodel.factory.ForgotPasswordActivityViewModelFactory;
 
-public class ForgotPasswordActivity extends BaseActivity<ForgotPasswordActivityViewModel> {
+public class ForgotPasswordActivity extends BaseActivity<ForgotPasswordActivityViewModel, ActivityForgotPasswordBinding> {
 
-    ActivityForgotPasswordBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        mBinding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
         setup();
     }
 
@@ -32,8 +31,8 @@ public class ForgotPasswordActivity extends BaseActivity<ForgotPasswordActivityV
         final SpannableString spannableString = new SpannableString(registerOrLogin);
         setUpSpannableString(spannableString, registerOrLogin, register, R.color.blue_sea, RegisterActivity.class);
         setUpSpannableString(spannableString, registerOrLogin, login, R.color.blue_sky, LoginActivity.class);
-        binding.txtRegisterOrLogin.setText(spannableString);
-        binding.txtRegisterOrLogin.setMovementMethod(LinkMovementMethod.getInstance());
+        mBinding.txtRegisterOrLogin.setText(spannableString);
+        mBinding.txtRegisterOrLogin.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

@@ -70,6 +70,7 @@ public class LoginActivityViewModel extends BaseViewModel {
             setErrorMessage("Đăng nhập không thành công");
             return;
         }
+        model.setRoleUser(model.getRole());
         Constants.setUserModel(model);
         Constants.setToken(model.getToken());
         userModel.setValue(model);

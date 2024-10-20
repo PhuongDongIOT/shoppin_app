@@ -11,7 +11,7 @@ import com.hcm.sale_laptop.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link OrderFragment#newInstance} factory method to
+ * Use the {@link OrderFragment} factory method to
  * create an instance of this fragment.
  */
 public class OrderFragment extends Fragment {

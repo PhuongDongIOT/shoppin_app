@@ -15,11 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OnboardingActivity extends BaseActivity<BaseViewModel> {
+public class OnboardingActivity extends BaseActivity<BaseViewModel, ActivityOnboardingBinding> {
 
-    private ActivityOnboardingBinding binding;
     private int mPageIndex = 0;
     private int mItemCount = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = ActivityOnboardingBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        setup();
+    }
 
     @Override
     protected void setupUI() {
@@ -28,35 +35,35 @@ public class OnboardingActivity extends BaseActivity<BaseViewModel> {
             add("Giao hàng nhanh");
             add("Hàng chất lượng");
         }};
-        binding.vp.setAdapter(new ViewPagerOnboardingAdapter(stringList, null));
-        mItemCount = Objects.requireNonNull(binding.vp.getAdapter()).getItemCount();
-        mPageIndex = binding.vp.getCurrentItem();
-        binding.wormDotsIndicator.attachTo(binding.vp);
+        mBinding.vp.setAdapter(new ViewPagerOnboardingAdapter(stringList, null));
+        mItemCount = Objects.requireNonNull(mBinding.vp.getAdapter()).getItemCount();
+        mPageIndex = mBinding.vp.getCurrentItem();
+        mBinding.wormDotsIndicator.attachTo(mBinding.vp);
     }
 
     @Override
     protected void setupAction() {
-        setOnClickListener(binding.btnNext, view -> {
+        setOnClickListener(mBinding.btnNext, view -> {
             mPageIndex += 1;
             if (mPageIndex >= mItemCount) {
                 mPageIndex = mItemCount - 1;
                 handlerNext();
                 return;
             }
-            binding.vp.setCurrentItem(mPageIndex, true);
+            mBinding.vp.setCurrentItem(mPageIndex, true);
         });
 
-        setOnClickListener(binding.btnPrevious, view -> {
+        setOnClickListener(mBinding.btnPrevious, view -> {
             mPageIndex -= 1;
             if (mPageIndex < 0) {
                 mPageIndex = 0;
                 return;
             }
-            binding.vp.setCurrentItem(mPageIndex, true);
+            mBinding.vp.setCurrentItem(mPageIndex, true);
         });
 
-        setOnClickListener(binding.txtSkip, view -> handlerNext());
-        binding.vp.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        setOnClickListener(mBinding.txtSkip, view -> handlerNext());
+        mBinding.vp.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -76,11 +83,4 @@ public class OnboardingActivity extends BaseActivity<BaseViewModel> {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityOnboardingBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setup();
-    }
 }
