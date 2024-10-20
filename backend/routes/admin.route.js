@@ -12,6 +12,10 @@ router.post(
     // auth(),
     adminController.postAddCategory
 );
+router.get(
+    '/category',
+    adminController.getListCategory
+);
 router.get('/product', adminController.getListProduct);
 router.get('/product/:productId', adminController.getProduct);
 router.post(

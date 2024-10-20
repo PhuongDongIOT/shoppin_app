@@ -84,6 +84,28 @@ exports.postDeleteCategory = (req, res, next) => {
     })
 };
 
+exports.getListCategory = (req, res, next) => {
+    CategoryModel.find().then(result => {
+        let objCategory = [];
+        try {
+            if (result) objCategory = Object.values(result)
+        } catch (error) { }
+        return res.json({
+            success: true,
+            error: null,
+            data: {
+                category: objCategory
+            }
+        });
+    }).catch(error => {
+        return res.json({
+            success: false,
+            data: null,
+            error: error
+        });
+    })
+};   
+
 exports.getListProduct = (req, res, next) => {
     ProductModel.find().then(result => {
         let objProduct = [];
@@ -94,7 +116,7 @@ exports.getListProduct = (req, res, next) => {
             success: true,
             error: null,
             data: {
-                produc: objProduct
+                product: objProduct
             }
         });
     }).catch(error => {
