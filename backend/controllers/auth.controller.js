@@ -51,7 +51,7 @@ exports.postLogin = (req, res, next) => {
                         error: null,
                         data: {
                             token: token,
-                            user: user
+                            ...user
                         }
                     })
                 })
