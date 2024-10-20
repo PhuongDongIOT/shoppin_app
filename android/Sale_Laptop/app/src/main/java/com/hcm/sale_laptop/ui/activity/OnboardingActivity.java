@@ -11,6 +11,8 @@ import com.hcm.sale_laptop.data.local.prefs.SharedPrefManager;
 import com.hcm.sale_laptop.databinding.ActivityOnboardingBinding;
 import com.hcm.sale_laptop.ui.adapter.ViewPagerOnboardingAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class OnboardingActivity extends BaseActivity<BaseViewModel> {
@@ -21,8 +23,12 @@ public class OnboardingActivity extends BaseActivity<BaseViewModel> {
 
     @Override
     protected void setupUI() {
-        binding.vp.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        binding.vp.setAdapter(new ViewPagerOnboardingAdapter());
+        final List<String> stringList = new ArrayList<String>() {{
+            add("Chào mừng bạn đến với cửa hàng của chúng tôi");
+            add("Giao hàng nhanh");
+            add("Hàng chất lượng");
+        }};
+        binding.vp.setAdapter(new ViewPagerOnboardingAdapter(stringList, null));
         mItemCount = Objects.requireNonNull(binding.vp.getAdapter()).getItemCount();
         mPageIndex = binding.vp.getCurrentItem();
         binding.wormDotsIndicator.attachTo(binding.vp);

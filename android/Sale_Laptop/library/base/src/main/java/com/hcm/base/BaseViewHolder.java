@@ -1,17 +1,19 @@
 package com.hcm.base;
 
-import android.view.View;
+import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
-import java.util.List;
+public abstract class BaseViewHolder<T, VB extends ViewBinding> extends RecyclerView.ViewHolder {
 
-public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
+    protected Context mContext;
 
-    public BaseViewHolder(View itemView) {
-        super(itemView);
+    public BaseViewHolder(VB binding) {
+        super(binding.getRoot());
+        mContext = binding.getRoot().getContext();
     }
 
-    public abstract void onBind(int position, List<T> list);
+    public abstract void onBind(T model);
 
 }
