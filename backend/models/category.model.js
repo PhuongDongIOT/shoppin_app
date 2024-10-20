@@ -6,7 +6,7 @@ class CategoryModel {
     tableCategory = 'categories';
 
     find = async (params = {}) => {
-        let sql = `SELECT * FROM ${this.tableCategory}`;
+        let sql = `SELECT CONVERT(categories.id, NCHAR) id, CONVERT(categories.parent_category, NCHAR) parent_category, slug, name, description FROM ${this.tableCategory}`;
         if (!Object.keys(params).length) return await query(sql);
         const { columnSet, values } = multipleColumnSet(params)
         sql += ` WHERE ${columnSet}`;
