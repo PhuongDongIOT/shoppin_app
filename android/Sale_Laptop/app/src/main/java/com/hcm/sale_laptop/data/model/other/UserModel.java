@@ -10,7 +10,6 @@ public class UserModel {
     private String address;
     private String id;
     private String email;
-    private String loacale;
     private String role;
     private int age;
     private String created_at;
@@ -26,7 +25,7 @@ public class UserModel {
     }
 
     public UserModel(String name, String phoneNumber, String address, String id,
-                     String email, String loacale, String role, int age,
+                     String email, String role, int age,
                      String created_at, String updated_at, String bio,
                      String company, String slug, String avatar, String token) {
         this.name = name;
@@ -34,7 +33,6 @@ public class UserModel {
         this.address = address;
         this.id = id;
         this.email = email;
-        this.loacale = loacale;
         this.role = role;
         this.age = age;
         this.created_at = created_at;
@@ -77,14 +75,6 @@ public class UserModel {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public String getLoacale() {
-        return loacale;
-    }
-
-    public void setLoacale(String loacale) {
-        this.loacale = loacale;
     }
 
     public String getRole() {
