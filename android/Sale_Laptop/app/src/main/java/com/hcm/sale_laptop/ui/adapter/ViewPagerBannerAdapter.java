@@ -19,12 +19,14 @@ public class ViewPagerBannerAdapter extends BaseAdapter<String, ItemBannerBindin
 
     @Override
     public int getItemCount() {
-        return 6;
+        return 4;
     }
 
     @Override
     protected ItemBannerBinding createBinding(LayoutInflater inflater, ViewGroup parent) {
-        return ItemBannerBinding.inflate(inflater, parent, false);
+        final ItemBannerBinding binding = ItemBannerBinding.inflate(inflater, parent, false);
+        AppUtils.setImageUrl(binding.imageViewBanner, "");
+        return binding;
     }
 
     @Override

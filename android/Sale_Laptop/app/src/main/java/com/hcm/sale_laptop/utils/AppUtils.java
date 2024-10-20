@@ -37,7 +37,9 @@ public class AppUtils {
     }
 
     public static void setImageUrl(ImageView imageView, String url) {
-        url = "https://photo.znews.vn/w660/Uploaded/mzdqv/2015_10_01/_20150914_160331.JPG";
+        if (stringNullOrEmpty(url)) {
+            url = "https://laptop88.vn/media/news/724_banner_800x300_4.png";
+        }
         final Context context = imageView.getContext();
         Glide.with(context)
                 .load(url)
