@@ -43,5 +43,6 @@
     <string name="classify">Phân loại</string>
     <string name="discounted_products">Sản phẩm giảm giá</string>
     <string name="see_all">Xem tất cả</string>
+    <string name="popular_products">Sản phẩm phổ biến</string>
 
 </resources>

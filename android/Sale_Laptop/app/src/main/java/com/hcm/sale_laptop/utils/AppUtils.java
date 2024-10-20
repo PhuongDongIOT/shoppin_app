@@ -37,8 +37,13 @@ public class AppUtils {
     }
 
     public static void setImageUrl(ImageView imageView, String url) {
-        Context context = imageView.getContext();
-        Glide.with(context).load(url).into(imageView);
+        url = "https://photo.znews.vn/w660/Uploaded/mzdqv/2015_10_01/_20150914_160331.JPG";
+        final Context context = imageView.getContext();
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.drawable.ic_downloading_24)
+                .error(R.drawable.ic_close_24)
+                .into(imageView);
     }
 
     public static boolean isNetworkConnected(Context context) {

@@ -1,54 +1,33 @@
 package com.hcm.sale_laptop.ui.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.hcm.base.BaseViewHolder;
-import com.hcm.sale_laptop.R;
+import com.hcm.base.BaseAdapter;
+import com.hcm.base.OnItemClick;
 import com.hcm.sale_laptop.data.model.other.PopularProductModel;
+import com.hcm.sale_laptop.databinding.ItemPopularProductBinding;
 
 import java.util.List;
 
-public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAdapter.PopularProductViewHolder> {
+public class PopularProductAdapter extends BaseAdapter<PopularProductModel, ItemPopularProductBinding> {
 
-    private final List<PopularProductModel> listModel;
-    private final Context context;
-
-    public PopularProductAdapter(List<PopularProductModel> listModel, Context context) {
-        this.listModel = listModel;
-        this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public PopularProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.item_popular_product, parent, false);
-        return new PopularProductAdapter.PopularProductViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull PopularProductViewHolder holder, int position) {
-        holder.onBind(position, listModel);
+    public PopularProductAdapter(List<PopularProductModel> itemList, OnItemClick<PopularProductModel> listener) {
+        super(itemList, listener);
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return 6;
     }
 
-    public static class PopularProductViewHolder extends BaseViewHolder<PopularProductModel> {
-        public PopularProductViewHolder(View itemView) {
-            super(itemView);
-        }
+    @Override
+    protected ItemPopularProductBinding createBinding(LayoutInflater inflater, ViewGroup parent) {
+        return ItemPopularProductBinding.inflate(inflater, parent, false);
+    }
 
-        @Override
-        public void onBind(int position, List<PopularProductModel> list) {
+    @Override
+    protected void bindData(PopularProductModel item, ItemPopularProductBinding binding, int position) {
 
-        }
     }
 }

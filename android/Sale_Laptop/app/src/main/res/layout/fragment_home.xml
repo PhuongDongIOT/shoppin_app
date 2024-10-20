@@ -60,14 +60,31 @@
             app:layout_constraintTop_toTopOf="@id/view_header" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp"
+            android:id="@+id/vp_banner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_160"
             android:layout_marginStart="@dimen/dp_8"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:background="@color/black"
+            android:layout_marginTop="@dimen/dp_8"
+            android:orientation="horizontal"
+            app:circularflow_defaultRadius="@dimen/dp_12"
+            app:layout_constraintCircleRadius="@dimen/dp_12"
             app:layout_constraintTop_toBottomOf="@id/view_header" />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/worm_dots_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:dotsColor="#747171"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="16dp"
+            app:dotsSpacing="4dp"
+            app:dotsStrokeWidth="2dp"
+            android:layout_marginBottom="@dimen/dp_12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/vp_banner"
+            app:selectedDotColor="#FF0000" />
 
         <TextView
             android:id="@+id/txt_classify"
@@ -80,7 +97,7 @@
             android:textSize="@dimen/sp_18"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp" />
+            app:layout_constraintTop_toBottomOf="@id/vp_banner" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_brand"
@@ -147,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_8"
-            android:text="@string/discounted_products"
+            android:text="@string/popular_products"
             android:textColor="#5F5D5D"
             android:textSize="@dimen/sp_18"
             android:textStyle="bold"

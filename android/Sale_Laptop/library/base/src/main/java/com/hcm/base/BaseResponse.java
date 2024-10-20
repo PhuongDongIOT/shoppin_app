@@ -1,6 +1,6 @@
 package com.hcm.base;
 
-public class BaseResponse <T> {
+public class BaseResponse<T> {
 
     private boolean success;
     private T data;

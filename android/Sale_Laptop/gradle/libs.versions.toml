@@ -17,11 +17,12 @@ converterGson = "2.11.0"
 retrofit = "2.11.0"
 rxjava3RetrofitAdapter = "3.0.0"
 glide = "5.0.0-rc01"
-timber = "5.0.1"
 library = "3.2.0-alpha11"
 cronetEmbedded = "119.6045.31"
 activity = "1.9.2"
 loggingInterceptor = "5.0.0-alpha.14"
+viewbinding = "8.7.1"
+timber = "5.0.1"
 
 [libraries]
 dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindicator" }
@@ -41,11 +42,12 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 rxjava3-retrofit-adapter = { group = "com.github.akarnokd", name = "rxjava3-retrofit-adapter", version.ref = "rxjava3RetrofitAdapter" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 library = { group = "androidx.databinding", name = "library", version.ref = "library" }
 cronet-embedded = { group = "org.chromium.net", name = "cronet-embedded", version.ref = "cronetEmbedded" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
