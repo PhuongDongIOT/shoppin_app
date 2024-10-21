@@ -14,7 +14,6 @@ import com.hcm.sale_laptop.ui.viewmodel.factory.ForgotPasswordActivityViewModelF
 
 public class ForgotPasswordActivity extends BaseActivity<ForgotPasswordActivityViewModel, ActivityForgotPasswordBinding> {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,7 +12,7 @@ import com.hcm.base.BaseFragment;
 import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.databinding.FragmentProductDetailBinding;
 
-public class DetailProductFragment extends BaseFragment<BaseViewModel, FragmentProductDetailBinding> {
+public class DetailProductFragment extends BaseFragment<BaseViewModel<?>, FragmentProductDetailBinding> {
 
     @Nullable
     @Override

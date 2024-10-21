@@ -28,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
 
-public abstract class BaseActivity<V extends BaseViewModel, B extends ViewBinding> extends AppCompatActivity {
+public abstract class BaseActivity<V extends BaseViewModel<?>, B extends ViewBinding> extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
     protected V mViewModel;
@@ -46,6 +46,21 @@ public abstract class BaseActivity<V extends BaseViewModel, B extends ViewBindin
         super.onCreate(savedInstanceState);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mViewModel != null) {
+            mViewModel.isLoading.observe(this, isLoading -> {
+                if (isLoading) {
+                    showProgressBar();
+                } else {
+                    hideProgressBar();
+                }
+            });
         }
     }
 

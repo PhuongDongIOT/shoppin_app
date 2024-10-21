@@ -20,14 +20,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LoginActivityViewModel extends BaseViewModel {
+public class LoginActivityViewModel extends BaseViewModel<LoginRepository> {
 
-    private final LoginRepository repository;
     private final MutableLiveData<UserModel> userModel = new MutableLiveData<>();
 
     public LoginActivityViewModel(@NonNull Application application) {
         super(application);
-        repository = new LoginRepository();
+        mRepository = new LoginRepository();
     }
 
     public void login(String username, String password) {
@@ -47,7 +46,7 @@ public class LoginActivityViewModel extends BaseViewModel {
             setErrorMessage(getStringResource(R.string.username_cannot_email));
             return;
         }
-        final Disposable disposable = repository.login(new LoginRequest(username, password))
+        final Disposable disposable = mRepository.login(new LoginRequest(username, password))
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(dis -> setLoading(true))
                 .doOnError(error -> setLoading(false))
@@ -76,7 +75,7 @@ public class LoginActivityViewModel extends BaseViewModel {
         userModel.setValue(model);
     }
 
-    public LiveData<UserModel> loginSuccess() {
+    public LiveData<UserModel> getUserModelWhenLoginSuccess() {
         return userModel;
     }
 

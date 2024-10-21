@@ -14,11 +14,12 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewbinding.ViewBinding;
 
 
 public abstract class BaseDialog extends DialogFragment {
 
-    private BaseActivity mActivity;
+    private BaseActivity<BaseViewModel<?>, ViewBinding> mActivity;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -72,7 +73,7 @@ public abstract class BaseDialog extends DialogFragment {
         dismiss();
     }
 
-    public BaseActivity getBaseActivity() {
+    public BaseActivity<BaseViewModel<?>, ViewBinding> getBaseActivity() {
         return mActivity;
     }
 
