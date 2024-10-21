@@ -45,5 +45,7 @@
     <string name="see_all">Xem tất cả</string>
     <string name="popular_products">Sản phẩm phổ biến</string>
     <string name="currency">VNĐ</string>
+    <string name="enter_phone_number">Nhập số điện thoại</string>
+    <string name="enter_address">Nhập địa chỉ</string>
 
 </resources>

@@ -7,16 +7,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.hcm.base.BaseActivity;
-import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.R;
 import com.hcm.sale_laptop.databinding.ActivityMainBinding;
 import com.hcm.sale_laptop.ui.fragment.AccountFragment;
 import com.hcm.sale_laptop.ui.fragment.HomeFragment;
 import com.hcm.sale_laptop.ui.fragment.InfoFragment;
 import com.hcm.sale_laptop.ui.fragment.OrderFragment;
+import com.hcm.sale_laptop.ui.viewmodel.MainActivityViewModel;
 
-public class MainActivity extends BaseActivity<BaseViewModel, ActivityMainBinding> {
-
+public class MainActivity extends BaseActivity<MainActivityViewModel, ActivityMainBinding> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

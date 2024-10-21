@@ -22,15 +22,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class HomeFragmentViewModel extends BaseViewModel {
+public class HomeFragmentViewModel extends BaseViewModel<HomeRepository> {
 
-    private final HomeRepository repository;
     private final MutableLiveData<List<BrandModel>> brandModels = new MutableLiveData<>();
     private final MutableLiveData<List<ProductModel>> productModels = new MutableLiveData<>();
 
     public HomeFragmentViewModel(@NonNull Application application) {
         super(application);
-        repository = new HomeRepository();
+        mRepository = new HomeRepository();
     }
 
     public void fetch() {
@@ -48,7 +47,7 @@ public class HomeFragmentViewModel extends BaseViewModel {
     }
 
     private void getDataProducts() {
-        final Disposable disposable = repository.getDataProducts()
+        final Disposable disposable = mRepository.getDataProducts()
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(dis -> setLoading(true))
                 .doOnError(error -> setLoading(false))
@@ -59,7 +58,7 @@ public class HomeFragmentViewModel extends BaseViewModel {
     }
 
     private void getDataBrand() {
-        final Disposable disposable = repository.getDataBrand()
+        final Disposable disposable = mRepository.getDataBrand()
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(dis -> setLoading(true))
                 .doOnError(error -> setLoading(false))

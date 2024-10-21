@@ -3,10 +3,10 @@
     <!-- Định nghĩa phần nền của ImageButton -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@android:color/white"/> <!-- Màu nền -->
+            <solid android:color="@android:color/white" /> <!-- Màu nền -->
             <stroke
                 android:width="2dp"
-                android:color="@android:color/black"/> <!-- Màu và độ dày viền -->
+                android:color="@android:color/black" /> <!-- Màu và độ dày viền -->
         </shape>
     </item>
 </layer-list>

@@ -4,9 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
+import com.hcm.base.BaseRepository;
 import com.hcm.base.BaseViewModel;
 
-public class MainActivityViewModel extends BaseViewModel {
+public class MainActivityViewModel extends BaseViewModel<BaseRepository> {
 
 //    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
 

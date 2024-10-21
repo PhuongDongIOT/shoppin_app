@@ -18,7 +18,7 @@ public interface ApiService {
     Single<LoginResponse> login(@Body LoginRequest signupRequest);
 
     @POST(EndPoint.SIGNUP)
-    Single<SignupResponse> signup(@Body SignupRequest signupRequest);
+    Single<SignupResponse> signupUser(@Body SignupRequest signupRequest);
 
     @GET(EndPoint.ADMIN_CATEGORY)
     Single<BrandResponse> getDataBrand();

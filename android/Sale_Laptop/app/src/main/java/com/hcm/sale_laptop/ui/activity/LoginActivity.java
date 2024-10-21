@@ -21,7 +21,6 @@ import com.hcm.sale_laptop.utils.AppUtils;
 
 public class LoginActivity extends BaseActivity<LoginActivityViewModel, ActivityLoginBinding> {
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +29,8 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel, Activity
         setup();
     }
 
-
     @Override
     protected void setupAction() {
-
         setOnClickListener(mBinding.btnLogin, view -> mViewModel.login(mBinding.editUserName.getText().toString(),
                 mBinding.editPassword.getText().toString()));
 
@@ -54,14 +51,7 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel, Activity
         mViewModel = new ViewModelProvider(this, new LoginActivityViewModelFactory(getApplication()))
                 .get(LoginActivityViewModel.class);
         mViewModel.errorMessage.observe(this, this::showToast);
-        mViewModel.isLoading.observe(this, isLoading -> {
-            if (isLoading) {
-                showProgressBar();
-            } else {
-                hideProgressBar();
-            }
-        });
-        mViewModel.loginSuccess().observe(this, model -> {
+        mViewModel.getUserModelWhenLoginSuccess().observe(this, model -> {
             final SharedPrefManager shared = SharedPrefManager.getInstance(this);
             if (mBinding.cbRememberAccount.isChecked()) {
                 saveData(shared);
@@ -96,14 +86,14 @@ public class LoginActivity extends BaseActivity<LoginActivityViewModel, Activity
         configEditTextPassword(mBinding.editPassword, offIcon, onIcon);
         final String userName = sharedPrefManager.getString(KeyPref.KEY_USER_NAME, "");
         final String userPassword = sharedPrefManager.getString(KeyPref.KEY_USER_NAME, "");
+        final boolean isSaveData = sharedPrefManager.getBoolean(KeyPref.KEY_REMEMBER_ACCOUNT, false);
+        if (!isSaveData) return;
         if (!AppUtils.stringNullOrEmpty(userName)) {
             mBinding.editUserName.setText(userName);
         }
         if (!AppUtils.stringNullOrEmpty(userName)) {
             mBinding.editPassword.setText(userPassword);
         }
-        mBinding.editUserName.setText("adminad@gmail.com");
-        mBinding.editPassword.setText("admin@6666");
     }
 
     private void configTextView() {

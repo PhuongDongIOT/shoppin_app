@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.hcm.base.BaseActivity;
+import com.hcm.base.BaseRepository;
 import com.hcm.base.BaseViewModel;
 import com.hcm.sale_laptop.data.local.prefs.KeyPref;
 import com.hcm.sale_laptop.data.local.prefs.SharedPrefManager;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OnboardingActivity extends BaseActivity<BaseViewModel, ActivityOnboardingBinding> {
+public class OnboardingActivity extends BaseActivity<BaseViewModel<BaseRepository>, ActivityOnboardingBinding> {
 
     private int mPageIndex = 0;
     private int mItemCount = 0;

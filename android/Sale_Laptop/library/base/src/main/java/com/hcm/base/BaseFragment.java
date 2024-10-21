@@ -15,10 +15,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
-public abstract class BaseFragment<V extends BaseViewModel, B extends ViewBinding> extends Fragment {
+public abstract class BaseFragment<V extends BaseViewModel<?>, B extends ViewBinding> extends Fragment {
 
     private Context mContext;
-    private BaseActivity<BaseViewModel, ViewBinding> mActivity;
+    private BaseActivity<V, B> mActivity;
     protected V mViewModel;
     protected B mBinding;
 
@@ -40,7 +40,7 @@ public abstract class BaseFragment<V extends BaseViewModel, B extends ViewBindin
         super.onAttach(context);
         this.mContext = context;  // Gán context của Fragment
         if (context instanceof BaseActivity) {
-            this.mActivity = (BaseActivity<BaseViewModel, ViewBinding>) context;
+            this.mActivity = (BaseActivity<V, B>) context;
         }
     }
 
@@ -92,7 +92,7 @@ public abstract class BaseFragment<V extends BaseViewModel, B extends ViewBindin
         }
     }
 
-    public BaseActivity<BaseViewModel, ViewBinding> getBaseActivity() {
+    public BaseActivity<V, B> getBaseActivity() {
         return mActivity;
     }
 
